@@ -1,0 +1,32 @@
+.TH JSCAL 1
+.SH NAME
+jscal \- joystick calibration program
+.SH SYNOPSIS
+.B jscal
+[options] <device-name>
+.SH DESCRIPTION
+.B jscal
+is a joystick calibration program for Linux joystick driver.
+.SH OPTIONS
+.IP "\fB\-c\fR, \fB\-\-calibrate\fR"
+Calibrate the joystick.
+.IP "\fB\-h\fR, \fB\-\-help\fR"
+Print out a summary of available options.
+.IP "\fB\-s\fR, \fB\-\-set\-correction\fR <\fIx,y,z...\fR>"
+Sets correction to specified values.
+.IP "\fB\-u\fR, \fB\-\-set\-mappings\fR <\fIn_of_axes,axmap1,axmap2,...,n_of_buttons,btnmap1,btnmap2,...\fR>"
+Sets axis and button mappings.
+.IP "\fB\-t\fR, \fB\-\-test\-center\fR"
+Tests if the joystick is correctly calibrated. Returns 2 if the axes are
+not calibrated, 3 if buttons were pressed, 1 if there was any other
+error, and 0 on success.
+.IP "\fB\-V\fR, \fB\-\-version\fR"
+Prints the version numbers.
+.IP "\fB\-p\fR, \fB\-\-print\-correction\fR"
+Prints the current correction settings. The format of the output is
+a jscal command line.
+.IP "\fB\-q\fR, \fB\-\-print\-mappings\fR"
+Prints the current axis and button mappings. The format of the output is
+a jscal command line.
+.SH SEE ALSO
+\fBjstest\fP(1), \fBinputattach\fP(1).

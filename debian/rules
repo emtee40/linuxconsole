@@ -1,0 +1,9 @@
+#!/usr/bin/make -f
+
+# DEB_SRCDIR = $(CURDIR)/utils
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/makefile.mk
+include /usr/share/cdbs/1/rules/patchsys-quilt.mk
+
+DEB_MAKE_BUILD_TARGET = jstest jscal inputattach

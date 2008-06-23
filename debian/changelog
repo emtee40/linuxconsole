@@ -1,0 +1,197 @@
+joystick (20051019-3) unstable; urgency=low
+
+  * New maintainer.
+  * Update inputattach. Closes: #419342
+  * Force removal of initscript. Closes: #338139
+  * Improve jscal jitter tolerance. Thanks Johan Walles! Closes: #144768
+  * Allow button and axis remapping in jscal. Thanks Dr. László Kaján!
+    Closes: #444142
+
+ -- Stephen Kitt <steve@sk2.org>  Wed, 11 Jun 2008 11:43:51 +0200
+
+joystick (20051019-2) unstable; urgency=low
+
+  * QA Upload
+    + change maintainer to QA group
+  * Remove dependency on makedev. Closes: #428219
+  * Fix description formatting. Closes: #445672
+
+ -- Frank Lichtenheld <djpig@debian.org>  Thu, 24 Apr 2008 21:20:28 +0200
+
+joystick (20051019-1.1) unstable; urgency=low
+
+  * Non-maintainer upload
+  * Fixed wrong setting of mouse type. Closes: #336882
+  * debian/control: added Homepage record
+  * Fixed the following lintian messages:
+    - W: joystick source: out-of-date-standards-version 3.6.2 (current is 3.7.2)
+    - E: joystick source: build-depends-on-build-essential build-depends
+
+ -- Anibal Monsalve Salazar <anibal@debian.org>  Wed, 26 Sep 2007 17:23:40 +1000
+
+joystick (20051019-1) unstable; urgency=low
+
+  * New upstream release. Closes: #245108
+  * drop joystick-device-check - leave device file handling to MAKEDEV
+    or udev this makes everything lots more simple, means debconf is
+    no longer a dependancy, and no need for an initscript.
+    Closes: #164592, #235168, #303682, #331872
+  * debian/rules: move to CDBS
+  * debian/control: added 'Requires at Linux 2.4 or newer.' Closes: #111117
+  * debian/control: Standards-Version: 3.6.2
+  * debian/copyright: updated FSF address
+  * debian/README.Debian: removed
+  * fix spelling mistakes in manpages Closes: #311445, #311446
+
+ -- Edward Betts <edward@debian.org>  Wed, 19 Oct 2005 06:22:03 +0100
+
+joystick (20010903-2) unstable; urgency=low
+
+  * debian/control: updated Standards-Version.
+  * debian/control: added version number to debhelper Build-Depends.
+  * debian/copyright: improved with more text from the GPL and a description
+    of changes to the package.
+  * debian/template: German translation from Sebastian Feltel
+    <sebastian@feltel.de>. (Closes: Bug#119939)
+
+ -- Edward Betts <edward@debian.org>  Wed, 26 Dec 2001 13:32:55 +0000
+
+joystick (20010903-1) unstable; urgency=low
+
+  * New upstream release
+  * Reorganised package to more closely resemble upstream CVS:
+      - joystick utils moved to utils dir
+      - header files moved to linux/include/linux
+      - debian/rules: updated to reflect moved files
+  * linux/Documentation: added from upstream CVS
+  * debian/rules: install documentation
+  * Patch from Eduard Bloch <edi@gmx.de> provides a debconf interface, init
+    script, joystick-device-check script, and man-page. This package now
+    provides better support for using joystick devices based on kernel
+    version. (Closes: Bug#96994)
+      - debian/joystick-device-check: checks and fixes joystick device
+      - debian/joystick-device-check.8: man page for joystick-device-check
+      - debian/joystick.{config,templates,postinst,postrm}: debconf support
+          for joystick-device-check
+      - debian/joystick.init: handle joystick-device-check at init
+      - debian/control: added Depends on debconf and joystick-device-check
+          description
+      - debian/joystick.dirs: added /usr/sbin for joystick-device-check
+      - debian/rules: install joystick-device-check and friends
+  * Lintian clean
+
+ -- Edward Betts <edward@debian.org>  Tue,  4 Sep 2001 13:11:54 +0100
+
+joystick (20010506-1) unstable; urgency=low
+
+  * New upstream release
+  * linux/joystick.h: included to make jscal work (Closes: Bug#96546)
+
+ -- Edward Betts <edward@debian.org>  Sun,  6 May 2001 16:52:29 -0600
+
+joystick (20000325-1) unstable; urgency=low
+
+  * New upstream release. (Closes: Bug#84783)
+  * debian/control: Standards-Version: 3.5.2
+  * debian/rules: Changed to debhelper 3
+  * debian/rules: Changed dh_installmanpages to dh_installman
+  * debian/rules: Removed dh_suidregister
+  * debian/rules: Removed dh_testversion
+  * debian/rules: Support DEB_BUILD_OPTIONS
+
+ -- Edward Betts <edward@debian.org>  Sat,  3 Mar 2001 14:28:43 -0700
+
+joystick (1.2.15-9) unstable; urgency=low
+
+  * Updated Standards-Version to 3.2.1
+  * Added version to debhelper build-depends to match dh_testversion
+  * Changed section from misc to utils (Closes: Bug#74466).
+
+ -- Edward Betts <edward@debian.org>  Mon, 30 Oct 2000 15:21:03 -0700
+
+joystick (1.2.15-8) unstable; urgency=low
+
+  * Fixed a stupid bug in the postinst (Closes: Bug#69408). 
+
+ -- Edward Betts <edward@debian.org>  Sat, 19 Aug 2000 11:31:27 +0100
+
+joystick (1.2.15-7) unstable; urgency=low
+
+  * Only create devices if they are not there. (Closes: Bug#69104).
+  * debian/control: updated Standards-Version to 3.2.0
+
+ -- Edward Betts <edward@debian.org>  Thu, 17 Aug 2000 14:19:13 +0100
+
+joystick (1.2.15-6) frozen unstable; urgency=low
+
+  * debian/copyright: rewrote. 
+
+ -- Edward Betts <edward@debian.org>  Mon, 17 Apr 2000 15:31:53 +0100
+
+joystick (1.2.15-5) frozen unstable; urgency=low
+
+  * jstest.c: Added `tv.tv_sec = 1', stops `jstest --select' from taking 100%
+    CPU, thanks to Tuomas Heino <iheino@cc.hut.fi> for spotting the bug and
+    providing a suggestion for the solution. Closes: Bug#61340
+
+ -- Edward Betts <edward@debian.org>  Wed, 29 Mar 2000 21:50:18 +0100
+
+joystick (1.2.15-4) frozen unstable; urgency=low
+
+  * Changed CFLAGS to -O2 -g -Wall -pipe closes: Bug#60873 filed by
+    Florian Lohoff <flo@rfc822.org> (removed -m486 from CFLAGS)
+
+ -- Edward Betts <edward@debian.org>  Wed, 22 Mar 2000 10:13:56 +0000
+
+joystick (1.2.15-3) frozen unstable; urgency=low
+
+  * debian/control: added a dependancy on makedev (>= 2.3.1-24) fixes other
+    half of important Bug#55679
+
+ -- Edward Betts <edward@debian.org>  Sat,  5 Feb 2000 13:06:55 +0000
+
+joystick (1.2.15-2) frozen unstable; urgency=low
+
+  * debian/postinst: s!./MAKEDEV!/sbin/MAKEDEV! closes: Bug#55679 
+
+ -- Edward Betts <edward@debian.org>  Fri, 28 Jan 2000 15:53:41 +0000
+
+joystick (1.2.15-1) unstable; urgency=low
+
+  * New upstream release.
+  * no long includes kernel module.
+  * debian/control: updateded Standards-Version to 3.1.1
+  * debian/control: added Build-Depends.
+
+ -- Edward Betts <edward@debian.org>  Thu,  6 Jan 2000 23:05:44 +0000
+
+jjoystick (0.8.0-5) unstable; urgency=low
+
+  * use update-modules. Fixes Bug#27104.
+  * compiled for kernel 2.0.33, 2.0.34 and 2.0.35. Fixes Bug#26700.
+
+ -- Frederic Lepied <Lepied@debian.org>  Thu, 15 Oct 1998 08:42:15 +0200
+
+joystick (0.8.0-4) unstable; urgency=low
+
+  * oops removed stable.
+
+ -- Frederic Lepied <Lepied@debian.org>  Sun,  6 Jul 1997 16:32:49 +0200
+
+joystick (0.8.0-3) stable unstable; urgency=low
+
+  * compiled with libc6.
+
+ -- Frederic Lepied <Lepied@debian.org>  Sun,  6 Jul 1997 09:06:33 +0200
+
+joystick (0.8.0-2) stable unstable; urgency=low
+
+  * compiled for kernels 2.0.27 and 2.0.30 (fixes bug #9902).
+
+ -- Frederic Lepied <Lepied@debian.org>  Thu, 5 Jun 1997 20:18:56 +0200
+
+joystick (0.8.0-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Frederic Lepied <Lepied@debian.org>  Fri, 31 Jan 1997 22:13:59 +0100

@@ -1,0 +1,28 @@
+.TH INPUTATTACH 1
+.SH NAME
+inputattach \- attach a serial line to a joystick device
+.SH SYNOPSIS
+.B inputattach
+<mode> <device>
+.SH DESCRIPTION
+.B inputattach
+is used for attaching a serial line to a joystick device via a 
+line discipline.
+.PP
+Exactly one of the following modes must be specified on the command
+line.
+.SH MODES
+.TP
+.I \--sball4
+Use this option for the SpaceBall 4000 FLX.
+.TP
+.I \--spaceorb
+Use this option for the SpaceOrb 360 or SpaceBall Avenger.
+.TP
+.I \--magellan
+Use this option for the Magellan or SpaceMouse.
+.TP
+.I \--warrior
+Use this option for the WingMan Warrior.
+.SH SEE ALSO
+\fBjscal\fP(1), \fBjstest\fP(1).
