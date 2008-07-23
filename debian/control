@@ -1,15 +1,15 @@
 Source: joystick
 Section: utils
-Priority: optional
+Priority: extra
 Maintainer: Stephen Kitt <steve@sk2.org>
-Standards-Version: 3.7.2
-Build-Depends: cdbs (>= 0.4.23-1.1), debhelper (>= 4.1.0), quilt (>= 0.40)
+Standards-Version: 3.8.0
+Build-Depends: cdbs, debhelper (>= 7), quilt (>= 0.46-6)
 Homepage: http://linuxconsole.sourceforge.net/
 
 Package: joystick
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends} 
-Description: Testing and calibration tools
+Description: set of testing and calibration tools for joysticks
  Some useful tools for using joysticks:
   jstest (1)      - joystick test program
   jscal (1)       - joystick calibration program
