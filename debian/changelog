@@ -1,11 +1,25 @@
+joystick (20051019-4) unstable; urgency=low
+
+  * Update short description as suggested by Ben Finney.
+  * Set priority to extra to match the override file, as suggested by Joe
+    Nahmias.
+  * Use debhelper 7, as hinted by Joe Nahmias and the debhelper
+    documentation.
+  * Remove versioned dependency on cdbs since even oldstable has a new
+    enough version.
+
+ -- Stephen Kitt <steve@sk2.org>  Wed, 23 Jul 2008 07:53:13 +0200
+
 joystick (20051019-3) unstable; urgency=low
 
-  * New maintainer.
+  * New maintainer. Closes: #465928
   * Update inputattach. Closes: #419342
   * Force removal of initscript. Closes: #338139
   * Improve jscal jitter tolerance. Thanks Johan Walles! Closes: #144768
   * Allow button and axis remapping in jscal. Thanks Dr. László Kaján!
     Closes: #444142
+  * Update Standards-Version to 3.8.0:
+    + add a README.source file explaining the basics of quilt
 
  -- Stephen Kitt <steve@sk2.org>  Wed, 11 Jun 2008 11:43:51 +0200
 
