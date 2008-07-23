@@ -1,0 +1,27 @@
+joystick packaging for Debian
+=============================
+
+This package uses quilt to manage patches to the original source. These are
+stored in debian/patches.
+
+To obtain the source which is compiled for the final package:
+* install quilt
+* export QUILT_PATCHES="debian/patches"
+* run either
+        ./debian/rules patch
+  or
+        quilt push -a
+
+To revert all patches, run either
+        ./debian/rules unpatch
+or
+        quilt pop -a
+
+To add a new patch, apply the existing patches, then indicate you're
+creating a new patch with
+        quilt new 99-fix-whatever.patch
+Edit the appropriate files with
+        quilt edit file1.c
+        quilt edit file2.h
+Store the changes with
+        quilt refresh
