@@ -1,1 +1,1 @@
-utils/{inputattach,jscal,jstest} usr/bin
+utils/{evtest,inputattach,jscal,jstest} usr/bin

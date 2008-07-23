@@ -9,6 +9,7 @@ Homepage: http://linuxconsole.sourceforge.net/
 Package: joystick
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends} 
+Conflicts: dvb-utils
 Description: set of testing and calibration tools for joysticks
  Some useful tools for using joysticks:
   jstest (1)      - joystick test program

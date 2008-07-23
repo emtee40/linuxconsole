@@ -7,6 +7,9 @@ joystick (20051019-4) unstable; urgency=low
     documentation.
   * Remove versioned dependency on cdbs since even oldstable has a new
     enough version.
+  * Ship evtest and associated manpage; lineakd diverts them so this package
+    need not conflict with lineakd, but it does need to conflict with
+    dvb-utils (which will not ship with Lenny). Closes: #475049
 
  -- Stephen Kitt <steve@sk2.org>  Wed, 23 Jul 2008 07:53:13 +0200
 
