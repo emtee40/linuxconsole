@@ -1,0 +1,29 @@
+.TH EVTEST 1 "July 23, 2008"
+.SH NAME
+evtest \- Input device event monitor
+.SH SYNOPSIS
+.B evtest 
+.I "/dev/input/eventX"
+
+.SH "DESCRIPTION"
+evtest displays information on the input device specified on the command
+line, including all the events supported by the device. It then monitors the
+device and displays all the events layer events generated.
+
+evtest needs to be able to read from the device; in most cases this means it
+must be run as root.
+
+.SH SEE ALSO
+\fBinputattach\fP(1), \fBjstest\fP(1).
+
+.SH AUTHOR
+.B evtest
+was written by Vojtech Pavlik <vojtech@suse.cz>.
+
+This manual page was written by Stephen Kitt <steve@sk2.org>, based on that
+present in the
+.B lineakd
+package, for the Debian GNU/Linux system (but may be used by others). It was
+last modified for
+.B evtest
+version 1.23.
