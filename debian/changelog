@@ -1,3 +1,9 @@
+joystick (20051019-5) unstable; urgency=low
+
+  * Remove changes to inputattach.c from the diff.gz.
+
+ -- Stephen Kitt <steve@sk2.org>  Sat, 26 Jul 2008 14:50:34 +0200
+
 joystick (20051019-4) unstable; urgency=low
 
   * Update short description as suggested by Ben Finney.
