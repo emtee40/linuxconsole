@@ -1,28 +1,115 @@
 .TH INPUTATTACH 1
 .SH NAME
-inputattach \- attach a serial line to a joystick device
+inputattach \- attach a serial line to an input-layer device
 .SH SYNOPSIS
 .B inputattach
-<mode> <device>
+[\-\-daemon] <mode> <device>
 .SH DESCRIPTION
 .B inputattach
-is used for attaching a serial line to a joystick device via a 
+is used for attaching a serial line to an input-layer device via a 
 line discipline.
 .PP
 Exactly one of the following modes must be specified on the command
 line.
 .SH MODES
 .TP
-.I \--sball4
-Use this option for the SpaceBall 4000 FLX.
+\fB\-dump\fR, \fB\-\-dump\fR
+Just enable device 
 .TP
-.I \--spaceorb
-Use this option for the SpaceOrb 360 or SpaceBall Avenger.
+\fB\-elo3b\fR, \fB\-\-elo261-280\fR
+ELO Touchscreen, 3-byte mode 
 .TP
-.I \--magellan
-Use this option for the Magellan or SpaceMouse.
+\fB\-elo4b\fR, \fB\-\-elo271-140\fR
+ELO touchscreen, 4-byte mode 
 .TP
-.I \--warrior
-Use this option for the WingMan Warrior.
+\fB\-elo6b\fR, \fB\-\-elo4002\fR
+ELO touchscreen, 6-byte mode 
+.TP
+\fB\-elo\fR, \fB\-\-elotouch\fR
+ELO touchscreen, 10-byte mode 
+.TP
+\fB\-fjt\fR, \fB\-\-fujitsu\fR
+Fujitsu serial touchscreen 
+.TP
+\fB\-ipaq\fR, \fB\-\-h3600ts\fR
+Ipaq h3600 touchscreen 
+.TP
+\fB\-ifor\fR, \fB\-\-iforce\fR
+I-Force joystick or wheel 
+.TP
+\fB\-ms3\fR, \fB\-\-intellimouse\fR
+Microsoft IntelliMouse 
+.TP
+\fB\-lk\fR, \fB\-\-lkkbd\fR
+DEC LK201 / LK401 keyboards 
+.TP
+\fB\-mag\fR, \fB\-\-magellan\fR
+Magellan / SpaceMouse 
+.TP
+\fB\-bare\fR, \fB\-\-microsoft\fR
+2-button Microsoft mouse 
+.TP
+\fB\-mmw\fR, \fB\-\-mmwheel\fR
+Logitech mouse with 4-5 buttons or a wheel 
+.TP
+\fB\-mman\fR, \fB\-\-mouseman\fR
+3-button Logitech / Genius mouse 
+.TP
+\fB\-msc\fR, \fB\-\-mousesystems\fR
+3-button Mouse Systems mouse 
+.TP
+\fB\-ms\fR, \fB\-\-mshack\fR
+3-button mouse in Microsoft mode 
+.TP
+\fB\-mtouch\fR, \fB\-\-mtouch\fR
+MicroTouch (3M) touchscreen 
+.TP
+\fB\-newt\fR, \fB\-\-newtonkbd\fR
+Newton keyboard 
+.TP
+\fB\-pm\fR, \fB\-\-penmount\fR
+Penmount touchscreen 
+.TP
+\fB\-ps2ser\fR, \fB\-\-ps2serkbd\fR
+PS/2 via serial keyboard 
+.TP
+\fB\-sbl\fR, \fB\-\-spaceball\fR
+SpaceBall 2003 / 3003 / 4000 FLX 
+.TP
+\fB\-orb\fR, \fB\-\-spaceorb\fR
+SpaceOrb 360 / SpaceBall Avenger 
+.TP
+\fB\-sting\fR, \fB\-\-stinger\fR
+Gravis Stinger 
+.TP
+\fB\-ipaqkbd\fR, \fB\-\-stowawaykbd\fR
+Stowaway keyboard 
+.TP
+\fB\-skb\fR, \fB\-\-sunkbd\fR
+Sun Type 4 and Type 5 keyboards 
+.TP
+\fB\-sun\fR, \fB\-\-sunmouse\fR
+3-button Sun mouse 
+.TP
+\fB\-tr\fR, \fB\-\-touchright\fR
+Touchright serial touchscreen 
+.TP
+\fB\-tw\fR, \fB\-\-touchwin\fR
+Touchwindow serial touchscreen 
+.TP
+\fB\-twidjoy\fR, \fB\-\-twiddler-joy\fR
+Handykey Twiddler used as a joystick 
+.TP
+\fB\-twid\fR, \fB\-\-twiddler\fR
+Handykey Twiddler chording keyboard 
+.TP
+\fB\-vs\fR, \fB\-\-vsxxx-aa\fR
+DEC VSXXX-AA / VSXXX-GA mouse and VSXXX-A tablet 
+.TP
+\fB\-war\fR, \fB\-\-warrior\fR
+WingMan Warrior 
+.SH OPTIONS
+.IP "\fB\-\-daemon\fR"
+Forks into the background.
 .SH SEE ALSO
 \fBjscal\fP(1), \fBjstest\fP(1).
