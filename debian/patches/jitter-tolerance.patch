@@ -1,3 +1,6 @@
+Improve jitter tolerance; patch provided by Johann Walles, see
+http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=144768
+
 --- joystick-20051019.orig/utils/jscal.c
 +++ joystick-20051019/utils/jscal.c
 @@ -202,6 +202,7 @@

@@ -1,3 +1,6 @@
+Update inputattach to the latest version, as available at
+http://kernel.org/pub/linux/kernel/people/dtor/
+
 --- joystick-20051019.orig/utils/inputattach.c
 +++ joystick-20051019/utils/inputattach.c
 @@ -1,5 +1,5 @@
