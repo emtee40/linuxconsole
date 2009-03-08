@@ -2,3 +2,4 @@ update-inputattach.patch
 jitter-tolerance.patch
 button-axis-remapping.patch
 usb-joystick-segfault-fix.patch
+eviocgbit-buffer.patch
