@@ -1,0 +1,33 @@
+.TH FFSET 1 "March 8, 2009"
+.SH NAME
+ffset \- set force-feedback device parameters
+.SH SYNOPSIS
+.B ffset
+<device> [\-g <gain>] [\-a <autocenter strength>]
+
+.SH "DESCRIPTION"
+ffset sets the gain and autocenter strength of a force-feedback
+device.
+
+.SH OPTIONS
+
+.IP "\fR<\fIdevice\fR>"
+The device to configure.
+
+.IP "\fB\-g\fR <\fIgain\fR>"
+The gain (0-100).
+
+.IP "\fB\-a\fR <\fIautocenter strength\fR>"
+The autocenter strength (0-100).
+
+.SH SEE ALSO
+\fBevtest\fP(1), \fBffcfstress\fP(1), \fBfftest\fP(1), \fBjstest\fP(1).
+
+.SH AUTHOR
+.B ffset
+was written by Johann Deneux.
+
+This manual page was written by Stephen Kitt <steve@sk2.org>, for the Debian
+GNU/Linux system (but may be used by others). It was last modified for
+.B ffmvforce
+dated May 30, 2001.
