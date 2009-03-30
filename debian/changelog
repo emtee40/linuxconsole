@@ -1,8 +1,25 @@
+joystick (20051019-6) unstable; urgency=low
+
+  * Package inputattach separately. Closes: #301009
+  * Ship force-feedback tools. LP: #131422
+  * Add initscript to save and restore calibration data. Closes: #144766
+
+ -- Stephen Kitt <steve@sk2.org>  Sun, 29 Mar 2009 21:33:52 +0200
+
 joystick (20051019-5) unstable; urgency=low
 
+  * Pass correct buffer size to EVIOCGBIT ioctl; thanks Sebastian Siewior!
+    Closes: #499414.
   * Remove changes to inputattach.c from the diff.gz.
+  * Update inputattach manpage.
+  * Add USB segfault fix for jstest from Ubuntu.
+  * Add comments on all patches.
+  * Merge jscal.1 changes from button-axis-remapping.patch to avoid the
+    Lintian warning about quilt patches changing files in the debian
+    directory.
+  * Remove reference to homepage which is dead.
 
- -- Stephen Kitt <steve@sk2.org>  Sat, 26 Jul 2008 14:50:34 +0200
+ -- Stephen Kitt <steve@sk2.org>  Sat, 01 Nov 2008 17:24:00 +0100
 
 joystick (20051019-4) unstable; urgency=low
 
