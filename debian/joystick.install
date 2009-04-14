@@ -1,1 +1,1 @@
-utils/{evtest,ffcfstress,ffmvforce,ffset,fftest,jscal,jstest} usr/bin
+utils/{ffcfstress,ffmvforce,ffset,fftest,jscal,jstest} usr/bin
