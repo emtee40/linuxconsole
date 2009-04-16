@@ -13,7 +13,7 @@ https://bugs.launchpad.net/ubuntu/+source/inputattach/+bug/338746
   */
  
  /*
-@@ -33,24 +35,16 @@
+@@ -33,24 +35,17 @@
   * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic
   */
  
@@ -27,6 +27,7 @@ https://bugs.launchpad.net/ubuntu/+source/inputattach/+bug/338746
 -#include <sys/ioctl.h>
 -#include <sys/time.h>
 -
++#include "serio-ids.h"
  #include <stdio.h>
  #include <stdlib.h>
 -#include <unistd.h>
@@ -44,7 +45,7 @@ https://bugs.launchpad.net/ubuntu/+source/inputattach/+bug/338746
  
  static int readchar(int fd, unsigned char *c, int timeout)
  {
-@@ -121,7 +115,7 @@
+@@ -121,7 +116,7 @@
  	return 0;
  }
  
@@ -53,7 +54,7 @@ https://bugs.launchpad.net/ubuntu/+source/inputattach/+bug/338746
  				int timeout)
  {
  	unsigned char b = 0;
-@@ -240,7 +234,7 @@
+@@ -240,7 +235,7 @@
  {
  	int i;
  	unsigned char c;
@@ -62,7 +63,7 @@ https://bugs.launchpad.net/ubuntu/+source/inputattach/+bug/338746
  
  	if (write(fd, " E5E5", 5) != 5)		/* Enable command */
  		return -1;
-@@ -362,6 +356,52 @@
+@@ -362,6 +357,52 @@
  	return 0;
  }
  
@@ -115,7 +116,7 @@ https://bugs.launchpad.net/ubuntu/+source/inputattach/+bug/338746
  static int dump_init(int fd, unsigned long *id, unsigned long *extra)
  {
  	unsigned char c, o = 0;
-@@ -480,6 +520,9 @@
+@@ -480,6 +521,9 @@
  { "--mtouch",		"-mtouch",	"MicroTouch (3M) touchscreen",
  	B9600, CS8 | CRTSCTS,
  	SERIO_MICROTOUCH,	0x00,	0x00,	0,	NULL },
@@ -125,7 +126,7 @@ https://bugs.launchpad.net/ubuntu/+source/inputattach/+bug/338746
  { "--touchright",	"-tr",	"Touchright serial touchscreen",
  	B9600, CS8 | CRTSCTS,
  	SERIO_TOUCHRIGHT,	0x00,	0x00,	0,	NULL },
-@@ -503,7 +546,7 @@
+@@ -503,7 +547,7 @@
  	struct input_types *type;
  
  	puts("");
@@ -134,7 +135,7 @@ https://bugs.launchpad.net/ubuntu/+source/inputattach/+bug/338746
  	puts("");
  	puts("Modes:");
  
-@@ -525,8 +568,10 @@
+@@ -525,8 +569,10 @@
  	unsigned long id, extra;
  	int fd;
  	int i;
@@ -146,7 +147,7 @@ https://bugs.launchpad.net/ubuntu/+source/inputattach/+bug/338746
  
  	for (i = 1; i < argc; i++) {
  		if (!strcasecmp(argv[i], "--help")) {
-@@ -534,6 +579,10 @@
+@@ -534,6 +580,10 @@
  			return EXIT_SUCCESS;
  		} else if (!strcasecmp(argv[i], "--daemon")) {
  			daemon_mode = 1;
@@ -157,7 +158,7 @@ https://bugs.launchpad.net/ubuntu/+source/inputattach/+bug/338746
  		} else if (need_device) {
  			device = argv[i];
  			need_device = 0;
-@@ -586,9 +635,15 @@
+@@ -586,9 +636,15 @@
  	id = type->id;
  	extra = type->extra;
  
