@@ -1,3 +1,7 @@
+Add an inputattach mode for the Sahara Touch-iT213 and options --always and
+--noinit; patch taken from
+https://bugs.launchpad.net/ubuntu/+source/inputattach/+bug/338746
+
 --- joystick-20051019.orig/utils/inputattach.c
 +++ joystick-20051019/utils/inputattach.c
 @@ -7,6 +7,8 @@
