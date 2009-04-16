@@ -3,3 +3,4 @@ jitter-tolerance.patch
 button-axis-remapping.patch
 usb-joystick-segfault-fix.patch
 eviocgbit-buffer.patch
+sahara-touchit-213.patch

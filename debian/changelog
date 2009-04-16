@@ -1,8 +1,11 @@
 joystick (20051019-6) unstable; urgency=low
 
-  * Package inputattach separately. Closes: #301009
+  * Add Sahara Touch-iT213 support; thanks Claudio Nieder! LP: #338746
+  * Package evtest and inputattach separately. Closes: #301009
   * Ship force-feedback tools. LP: #131422
   * Add initscript to save and restore calibration data. Closes: #144766
+  * Rewrite debian/copyright.
+  * Rewrite manpages.
 
  -- Stephen Kitt <steve@sk2.org>  Sun, 29 Mar 2009 21:33:52 +0200
 
