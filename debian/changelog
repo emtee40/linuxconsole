@@ -6,6 +6,7 @@ joystick (20051019-6) unstable; urgency=low
   * Add initscript to save and restore calibration data. Closes: #144766
   * Rewrite debian/copyright.
   * Rewrite manpages.
+  * Standards-Version 3.8.1, no change required.
 
  -- Stephen Kitt <steve@sk2.org>  Sun, 29 Mar 2009 21:33:52 +0200
 
