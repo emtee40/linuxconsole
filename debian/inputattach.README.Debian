@@ -1,0 +1,15 @@
+inputattach for Debian
+----------------------
+
+This package does not include an initscript to initialize your
+devices automatically; it isn't possible to adequately control
+inputattach as would be required for an initscript.
+
+To automatically attach a serial device to the input layer, the
+recommended approach is simply to add the appropriate lines to
+/etc/rc.local, or to a local udev rules file. For example, to
+configure a Mouse Systems mouse on the first serial port:
+ * in /etc/rc.local
+	inputattach --daemon -msc /dev/ttyS0
+ * or in /etc/udev/010_local.rules
+	ACTION="add", KERNEL=="ttyS0", RUN+="inputattach --daemon -msc %p"
