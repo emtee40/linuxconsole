@@ -1,3 +1,6 @@
+Updates the identifiers in serio-ids.h to conform to those used in serio.h
+as shipped in kernel 2.6.29.
+
 --- joystick-20051019.orig/utils/serio-ids.h
 +++ joystick-20051019/utils/serio-ids.h
 @@ -104,8 +104,23 @@
