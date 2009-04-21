@@ -1,11 +1,24 @@
 #!/usr/bin/make -f
 
-DEB_SRCDIR = $(CURDIR)/utils
-DEB_QUILT_TOPDIR = .
-
-include /usr/share/cdbs/1/rules/debhelper.mk
-include /usr/share/cdbs/1/class/makefile.mk
-include /usr/share/cdbs/1/rules/patchsys-quilt.mk
-
 DEB_MAKE_BUILD_TARGET = jstest jscal inputattach evtest ffcfstress ffmvforce ffset fftest
 
+include /usr/share/quilt/quilt.make
+
+build: $(QUILT_STAMPFN) build-stamp
+build-stamp:
+	dh build
+	touch $@
+
+%:
+	dh $@
+
+clean: clean-patched unpatch
+clean-patched:
+	make -C utils clean
+	dh clean
+	rm -f build-stamp
+
+override_dh_auto_build:
+	make -C utils $(DEB_MAKE_BUILD_TARGET)
+
+.PHONY: patch unpatch clean clean-patched build override_dh_auto_build

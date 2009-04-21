@@ -3,7 +3,7 @@ Section: utils
 Priority: extra
 Maintainer: Stephen Kitt <steve@sk2.org>
 Standards-Version: 3.8.1
-Build-Depends: cdbs, debhelper (>= 7), quilt (>= 0.46-6), libsdl1.2-dev
+Build-Depends: debhelper (>= 7.0.50), quilt (>= 0.46-6), libsdl1.2-dev
 
 Package: joystick
 Architecture: any
@@ -19,7 +19,7 @@ Description: set of testing and calibration tools for joysticks
   jstest(1)     - joystick test
   jscal(1)      - joystick calibration tool
  .
- evtest and inputattach, which used to be a part of this package, are now
+ evtest and inputattach, which used to be part of this package, are now
  available separately.
 
 Package: evtest
