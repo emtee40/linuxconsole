@@ -1,0 +1,20 @@
+Avoid segfaulting if the button map is incorrect.
+
+--- joystick-20051019.orig/utils/jstest.c
++++ joystick-20051019/utils/jstest.c
+@@ -117,8 +117,13 @@
+ 		puts(")");
+ 
+ 		printf("and %d buttons (", buttons);
+-		for (i = 0; i < buttons; i++)
+-			printf("%s%s", i > 0 ? ", " : "", button_names[btnmap[i] - BTN_MISC]);
++		for (i = 0; i < buttons; i++) {
++		  if (btnmap[i] >= BTN_MISC && btnmap[i] <= KEY_MAX) {
++		    printf("%s%s", i > 0 ? ", " : "", button_names[btnmap[i] - BTN_MISC]);
++		  } else {
++		    printf("%s?", i > 0 ? ", " : "");
++		  }
++		}
+ 		puts(").");
+ 	}
+ 

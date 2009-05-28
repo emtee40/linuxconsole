@@ -8,6 +8,8 @@ joystick (20051019-6) unstable; urgency=low
   * Rewrite debian/copyright.
   * Rewrite manpages.
   * Standards-Version 3.8.1, no change required.
+  * Allow mapping axes without mapping buttons, and remap calibration data
+    when remapping axes; thanks Krzysztof A. Sobiecki! Closes: #529865
 
  -- Stephen Kitt <steve@sk2.org>  Sun, 29 Mar 2009 21:33:52 +0200
 
