@@ -1,33 +1,39 @@
-.TH JSTEST 1
+.TH jstest 1 "April 21, 2009" jstest
 .SH NAME
 jstest \- joystick test program
 .SH SYNOPSIS
-.B jstest
-[\--normal] [\--old] [\--event] [\--nonblock] [\--select] <device-name>
+.BR jstest " [" \-\-normal "] [" \-\-old "] [" \-\-event "] [" \-\-nonblock "] [" \-\-select "] <\fIdevice-name\fP>"
 .SH DESCRIPTION
-.B jstest
-can be used to test all the features of the Linux
+\fBjstest\fP can be used to test all the features of the Linux
 joystick API, including non-blocking and \fBselect\fP(2) access, as
 well as version 0.x compatibility mode.
 .PP
-It is also intended to
-serve as an example implementation for those who wish to learn
-how to write their own joystick using applications.
+It is also intended to serve as an example implementation for those
+who wish to learn how to write their own joystick using applications.
 .SH OPTIONS
 .TP
-.I \--normal
+.B \-\-normal
 One-line mode showing immediate status.
 .TP
-.I \--old
-Same as \--normal, using 0.x interface.
+.B \-\-old
+Same as \-\-normal, using 0.x interface.
 .TP
-.I \--event
+.B \-\-event
 Prints events as they come in.
 .TP
-.I \--nonblock
-Same as \--event, in nonblocking mode.
+.B \-\-nonblock
+Same as \-\-event, in nonblocking mode.
 .TP
-.I \--select
+.B \-\-select
 Same as \--event, using \fBselect\fP(2) call.
 .SH SEE ALSO
-\fBjscal\fP(1), \fBinputattach\fP(1), \fBselect\fP(2).
+\fBfftest\fP(1), jscal\fP(1).
+.SH AUTHOR
+.B jstest
+was written by Vojtech Pavlik.
+.PP
+This manual page was written by Stephen Kitt <steve@sk2.org>, for the Debian
+GNU/Linux system (but may be used by others).
+It was last modified for
+.B jstest
+version 1.2, dated March 22, 2005.
