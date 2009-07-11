@@ -2,13 +2,13 @@ Source: joystick
 Section: utils
 Priority: extra
 Maintainer: Stephen Kitt <steve@sk2.org>
-Standards-Version: 3.8.1
+Standards-Version: 3.8.2
 Build-Depends: debhelper (>= 7.0.50), quilt (>= 0.46-6), libsdl1.2-dev
 
 Package: joystick
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends} 
-Conflicts: dvb-utils
+Conflicts: dvb-utils (<< 1.1.1+rev1207-4)
 Recommends: evtest, inputattach
 Description: set of testing and calibration tools for joysticks
  Some useful tools for using joysticks:

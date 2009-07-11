@@ -7,11 +7,13 @@ joystick (20051019-6) unstable; urgency=low
   * Switch from cdbs to dh 7.
   * Rewrite debian/copyright.
   * Rewrite manpages.
-  * Standards-Version 3.8.1, no change required.
+  * Standards-Version 3.8.2, no change required.
   * Allow mapping axes without mapping buttons, and remap calibration data
     when remapping axes; thanks Krzysztof A. Sobiecki! Closes: #529865
   * Avoid segfaulting when the button map reported by the kernel is
     incorrect; hopefully closes: #536013.
+  * Add version to the dvb-utils conflict, since the version in Lenny is
+    just a transitional package there is no conflict.
 
  -- Stephen Kitt <steve@sk2.org>  Sat, 11 Jul 2009 17:28:37 +0200
 
