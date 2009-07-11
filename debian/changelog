@@ -10,8 +10,10 @@ joystick (20051019-6) unstable; urgency=low
   * Standards-Version 3.8.1, no change required.
   * Allow mapping axes without mapping buttons, and remap calibration data
     when remapping axes; thanks Krzysztof A. Sobiecki! Closes: #529865
+  * Avoid segfaulting when the button map reported by the kernel is
+    incorrect; hopefully closes: #536013.
 
- -- Stephen Kitt <steve@sk2.org>  Sun, 29 Mar 2009 21:33:52 +0200
+ -- Stephen Kitt <steve@sk2.org>  Sat, 11 Jul 2009 17:28:37 +0200
 
 joystick (20051019-5) unstable; urgency=low
 
