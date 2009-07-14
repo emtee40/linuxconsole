@@ -1,3 +1,10 @@
+joystick (20051019-7) unstable; urgency=low
+
+  * Make evtest and inputattach conflict with previous versions of
+    joystick, as suggested by LI Daobing.
+
+ -- Stephen Kitt <steve@sk2.org>  Tue, 14 Jul 2009 23:17:54 +0200
+
 joystick (20051019-6) unstable; urgency=low
 
   * Add Sahara Touch-iT213 support; thanks Claudio Nieder! LP: #338746
