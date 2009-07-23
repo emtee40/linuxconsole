@@ -21,4 +21,8 @@ clean-patched:
 override_dh_auto_build:
 	make -C utils $(DEB_MAKE_BUILD_TARGET)
 
+# Recover from broken initscript in -7
+override_dh_installinit:
+	dh_installinit --error-handler=true
+
 .PHONY: patch unpatch clean clean-patched build override_dh_auto_build

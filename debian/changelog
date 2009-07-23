@@ -1,3 +1,10 @@
+joystick (20051019-8) unstable; urgency=low
+
+  * Avoid failing with an exit code of 1 in the initscript; thanks Sean
+    Finney! Closes: #537804
+
+ -- Stephen Kitt <steve@sk2.org>  Tue, 21 Jul 2009 10:12:59 +0200
+
 joystick (20051019-7) unstable; urgency=low
 
   * Make evtest and inputattach conflict with previous versions of
