@@ -1,3 +1,20 @@
+joystick (20051019-9) unstable; urgency=low
+
+  * Handle the various buffer sizes expected in kernels 2.6.27 to 2.6.30.8
+    (2.6.28 changed the value of KEY_MAX, which changed the definition of
+    a joystick-related ioctl; 2.6.31 fixed the problem by handling any
+    buffer size - see ec8b4b7085605e801a7740a2c3c33256aebe249c in the
+    kernel git repository, which was also shipped in 2.6.30.8). Correctly
+    closes: #536013. Thanks to Krzysztof A. Sobiecki for help determining
+    the actual cause of the behaviour seen in jstest!
+  * Avoid treating positive return values from ioctl() as errors; kernels
+    starting with 2.6.32 return buffer sizes in some cases (see
+    999b874f4aa39b7abf45662ff0900f943ddb2d02 in the kernel git
+    repository).
+  * Standards-Version 3.8.3, no change required.
+
+ -- Stephen Kitt <steve@sk2.org>  Mon, 12 Oct 2009 15:05:26 +0200
+
 joystick (20051019-8) unstable; urgency=low
 
   * Avoid failing with an exit code of 1 in the initscript; thanks Sean
