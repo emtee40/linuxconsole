@@ -12,8 +12,10 @@ joystick (20051019-9) unstable; urgency=low
     999b874f4aa39b7abf45662ff0900f943ddb2d02 in the kernel git
     repository).
   * Standards-Version 3.8.3, no change required.
+  * initscript stops in level 1 as well as 0 and 6. Note that the
+    initscript will be going away soon, see #540680.
 
- -- Stephen Kitt <steve@sk2.org>  Mon, 12 Oct 2009 15:05:26 +0200
+ -- Stephen Kitt <steve@sk2.org>  Mon, 12 Oct 2009 15:12:52 +0200
 
 joystick (20051019-8) unstable; urgency=low
 
