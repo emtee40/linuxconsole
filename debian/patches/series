@@ -7,3 +7,4 @@ sahara-touchit-213.patch
 sync-serio-2.6.29.patch
 remap-calibration.patch
 button-map-segfault-fix.patch
+ioctl-error-handling.patch
