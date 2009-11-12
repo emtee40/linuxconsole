@@ -3,7 +3,7 @@ Section: utils
 Priority: extra
 Maintainer: Stephen Kitt <steve@sk2.org>
 Standards-Version: 3.8.3
-Build-Depends: debhelper (>= 7.0.50), quilt (>= 0.46-6), libsdl1.2-dev
+Build-Depends: debhelper (>= 7.0.50), libsdl1.2-dev
 
 Package: joystick
 Architecture: any

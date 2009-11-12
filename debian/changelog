@@ -1,3 +1,9 @@
+joystick (20051019-10) unstable; urgency=low
+
+  * Switch to 3.0 (quilt) format.
+
+ -- Stephen Kitt <steve@sk2.org>  Wed, 11 Nov 2009 23:10:43 +0100
+
 joystick (20051019-9) unstable; urgency=low
 
   * Handle the various buffer sizes expected in kernels 2.6.27 to 2.6.30.8

@@ -2,21 +2,12 @@
 
 DEB_MAKE_BUILD_TARGET = jstest jscal inputattach evtest ffcfstress ffmvforce ffset fftest
 
-include /usr/share/quilt/quilt.make
-
-build: $(QUILT_STAMPFN) build-stamp
-build-stamp:
-	dh build
-	touch $@
-
 %:
 	dh $@
 
-clean: clean-patched unpatch
-clean-patched:
+clean:
 	make -C utils clean
 	dh clean
-	rm -f build-stamp
 
 override_dh_auto_build:
 	make -C utils $(DEB_MAKE_BUILD_TARGET)
@@ -25,4 +16,4 @@ override_dh_auto_build:
 override_dh_installinit:
 	dh_installinit --error-handler=true
 
-.PHONY: patch unpatch clean clean-patched build override_dh_auto_build
+.PHONY: clean build override_dh_auto_build
