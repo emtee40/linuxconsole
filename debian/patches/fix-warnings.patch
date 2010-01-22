@@ -1,3 +1,5 @@
+Fix SDL-related warnings.
+
 --- joystick-20051019.orig/utils/Makefile
 +++ joystick-20051019/utils/Makefile
 @@ -41,8 +41,7 @@
