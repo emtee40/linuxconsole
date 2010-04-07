@@ -1,0 +1,82 @@
+--- joystick-20051019.orig/utils/Makefile
++++ joystick-20051019/utils/Makefile
+@@ -33,7 +33,7 @@
+ CFLAGS		= -g -O2 -Wall -I../linux/include
+ 
+ PROGRAMS	= evtest inputattach jstest jscal fftest ffmvforce ffset \
+-		  ffcfstress # acceltest
++		  ffcfstress jskeepalive # acceltest
+ 
+ compile: $(PROGRAMS)
+ 
+@@ -65,3 +65,6 @@
+ 
+ acceltest: acceltest.c
+ 	$(CC) $(CFLAGS) $(CPPFLAGS) -lm $^ -o $@
++
++jskeepalive: jskeepalive.c
++	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@
+--- /dev/null
++++ joystick-20051019/utils/jskeepalive.c
+@@ -0,0 +1,61 @@
++/*
++ * jskeepalive.c  Version 1.0
++ *
++ * Copyright © 2010 Stephen Kitt
++ *
++ * Based on jstest.c
++ */
++
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of the
++ * License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
++ * 02110-1301, USA.
++ *
++ * Should you need to contact me, the author, you can do so by email
++ * at <steve@sk2.org>.
++ */
++
++#include <fcntl.h>
++#include <unistd.h>
++#include <stdio.h>
++#include <string.h>
++
++#include <linux/joystick.h>
++
++int main (int argc, char **argv)
++{
++  int fd;
++  struct js_event js;
++  
++  if (argc != 2 || !strcmp("--help", argv[1])) {
++    puts("");
++    puts("Usage: jskeepalive <device>");
++    puts("");
++    return 1;
++  }
++  
++  if ((fd = open(argv[argc - 1], O_RDONLY)) < 0) {
++    perror("jskeepalive");
++    return 1;
++  }
++  
++  while (1) {
++    if (read(fd, &js, sizeof(struct js_event)) != sizeof(struct js_event)) {
++      perror("\njskeepalive: error reading");
++      return 1;
++    }
++  }
++  
++  return -1;
++}
