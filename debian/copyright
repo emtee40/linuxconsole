@@ -21,6 +21,7 @@ Copyright:
       Twiddler support Copyright © 2001 Arndt Schoenewald
     jscal.c       Copyright © 1997-1999 Vojtech Pavlik
     jstest.c      Copyright © 1996-1999 Vojtech Pavlik
+    jskeepalive.c Copyright © 2010 Stephen Kitt
     
     Packaging     Copyright © 1997-1998 Frederic Lepied
                   Copyright © 2000-2005 Edward Betts

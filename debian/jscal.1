@@ -12,8 +12,10 @@ correctly interpreted.
 Mapping axes and buttons allows the meanings of the joystick's axes
 and buttons to be redefined.
 .PP
-On Debian systems the calibration settings are stored at shutdown
-and restored at bootup, by the joystick initialization script.
+On Debian systems the calibration settings can be stored and later
+applied automatically using the
+.B jscal-store
+command.
 .SH OPTIONS
 .TP
 .BR \-c ", " \-\-calibrate
@@ -44,12 +46,8 @@ The format of the output is a jscal command line.
 .IP "\fB\-q\fR, \fB\-\-print\-mappings\fR"
 Prints the current axis and button mappings.
 The format of the output is a jscal command line.
-.SH FILES
-.TP
-/var/lib/joystick/joystick.state
-File used to store the calibration settings.
 .SH SEE ALSO
-\fBffset\fP(1), \fBjstest\fP(1).
+\fBffset\fP(1), \fBjstest\fP(1), \fBjscal-store\fP(1).
 .SH AUTHORS
 .B jscal
 was written by Vojtech Pavlik.
