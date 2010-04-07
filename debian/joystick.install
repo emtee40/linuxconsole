@@ -1,1 +1,3 @@
-utils/{ffcfstress,ffmvforce,ffset,fftest,jscal,jstest} usr/bin
+utils/{ffcfstress,ffmvforce,ffset,fftest,jscal,jskeepalive,jstest} usr/bin
+debian/jscal-{re,}store usr/bin
+debian/{extract,filter,ident} usr/share/joystick

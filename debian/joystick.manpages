@@ -1,1 +1,1 @@
-debian/{ffcfstress,ffmvforce,ffset,fftest,jscal,jstest}.1
+debian/{ffcfstress,ffmvforce,ffset,fftest,jscal,jscal-restore,jscal-store,jskeepalive,jstest}.1

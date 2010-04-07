@@ -5,6 +5,10 @@ joystick (20051019-10) unstable; urgency=low
   * Fix SDL-related warnings.
   * Remove fix for broken initscript in -7 (which never made it to
     stable).
+  * Prevent Acrux gamepads from disappearing after the inital device setup
+    (LP: #448446).
+  * Handle calibration using udev rather than an initscript. Closes:
+    #540680.
   
   [ Dmitrijs Ledkovs ]
   * Simplified debian/rules; fixes FTBS with parallel make. Closes:
