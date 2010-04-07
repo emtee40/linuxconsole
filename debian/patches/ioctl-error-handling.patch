@@ -44,7 +44,7 @@ used when everything goes well.
  		perror("jscal: error setting correction");
  		exit(1);
  	}
-@@ -342,11 +342,11 @@
+@@ -342,19 +342,19 @@
  {
  	int i;
  
@@ -58,6 +58,16 @@ used when everything goes well.
  		perror("jscal: error getting buttons");
  		exit(1);
  	}
+-	if (ioctl(fd, JSIOCGAXMAP, &axmap)) {
++	if (ioctl(fd, JSIOCGAXMAP, &axmap) < 0) {
+ 		perror("jscal: error getting axis map");
+ 		exit(1);
+ 	}
+-	if (ioctl(fd, JSIOCGBTNMAP, &buttonmap)) {
++	if (ioctl(fd, JSIOCGBTNMAP, &buttonmap) < 0) {
+ 	        buttons=0;
+ 	}
+ 
 @@ -400,7 +400,7 @@
  	        ax[i]=axmes[(axmap[i])];
  	}
