@@ -10,3 +10,4 @@ button-map-segfault-fix.patch
 ioctl-error-handling.patch
 fix-warnings.patch
 jskeepalive.patch
+evtest-flush-stdout.patch
