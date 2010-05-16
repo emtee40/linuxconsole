@@ -1,3 +1,8 @@
+Provide a jskeepalive program to prevent Acrux gamepads from
+disappearing. See
+https://bugs.launchpad.net/ubuntu/+source/joystick/+bug/448446 for
+more information.
+
 --- joystick-20051019.orig/utils/Makefile
 +++ joystick-20051019/utils/Makefile
 @@ -33,7 +33,7 @@
