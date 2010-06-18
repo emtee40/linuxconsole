@@ -1,7 +1,7 @@
 joystick (20051019-11) unstable; urgency=low
 
   * evtest: flush standard output, thanks Florian Fainelli! Closes:
-    #581470.
+    #581740.
 
  -- Stephen Kitt <steve@sk2.org>  Sun, 16 May 2010 16:11:59 +0200
 
