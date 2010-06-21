@@ -1,6 +1,7 @@
 joystick (20051019-12) unstable; urgency=low
 
   * Use the correct maximum number of axes. LP: #595767.
+  * Small fixes to the manpages.
 
  -- Stephen Kitt <steve@sk2.org>  Mon, 21 Jun 2010 06:40:10 +0200
 
