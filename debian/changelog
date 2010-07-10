@@ -3,8 +3,10 @@ joystick (20051019-12) unstable; urgency=low
   * Use the correct maximum number of axes. LP: #595767.
   * Small fixes to the manpages.
   * Correct all remaining ioctl() checks. Closes: #587439.
+  * Explain the purpose of calibration and how to determine whether a
+    joystick is calibrated. LP: #497835.
 
- -- Stephen Kitt <steve@sk2.org>  Sat, 10 Jul 2010 23:56:29 +0200
+ -- Stephen Kitt <steve@sk2.org>  Sun, 11 Jul 2010 00:13:43 +0200
 
 joystick (20051019-11) unstable; urgency=low
 
