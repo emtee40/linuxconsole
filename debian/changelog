@@ -5,7 +5,9 @@ joystick (20051019-12) unstable; urgency=low
   * Correct all remaining ioctl() checks. Closes: #587439.
   * Explain the purpose of calibration and how to determine whether a
     joystick is calibrated. LP: #497835.
-  * Standards-Version 3.9.0, no change required.
+  * Standards-Version 3.9.0: use Breaks rather than Conflits, and
+    incidentally move the Breaks on dvb-utils to evtest where it really
+    belongs.
 
  -- Stephen Kitt <steve@sk2.org>  Sun, 11 Jul 2010 00:13:43 +0200
 
