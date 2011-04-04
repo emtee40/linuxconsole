@@ -9,8 +9,16 @@ joystick (1:1.4~rc1-1) unstable; urgency=low
     usage, and --with-quilt directive to sh.
   * Drop manpages, merged upstream.
   * Drop store/restore tools, merged upstream.
+  * Rework udev rules:
+    - provide agents to delay invoking inputattach or jscal-restore until
+      they become available;
+    - drop jskeepalive and use sleep instead to stop Acrux devices from
+      going into a coma (as suggested by Oliver Neukum), for kernels prior
+      to 2.6.39;
+    - only apply the udev rules when adding devices (as suggested by
+      Roberto Neri).
 
- -- Stephen Kitt <steve@sk2.org>  Mon, 04 Apr 2011 15:46:53 +0200
+ -- Stephen Kitt <steve@sk2.org>  Mon, 04 Apr 2011 16:56:39 +0200
 
 joystick (20051019-12) unstable; urgency=low
 
