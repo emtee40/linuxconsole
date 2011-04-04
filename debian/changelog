@@ -17,6 +17,7 @@ joystick (1:1.4~rc1-1) unstable; urgency=low
       to 2.6.39;
     - only apply the udev rules when adding devices (as suggested by
       Roberto Neri).
+  * Standards-Version 3.9.1, no change required.
 
  -- Stephen Kitt <steve@sk2.org>  Mon, 04 Apr 2011 16:56:39 +0200
 
