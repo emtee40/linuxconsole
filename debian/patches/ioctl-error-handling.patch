@@ -1,0 +1,336 @@
+ioctl() return values are negative if an error occurs. A positive
+value can be returned legitimately.
+
+This patch is required for jscal to work with kernels starting with
+2.6.32; the axis and button map ioctls return the size of the buffer
+used when everything goes well.
+
+--- joystick-20051019.orig/utils/jscal.c
++++ joystick-20051019/utils/jscal.c
+@@ -179,15 +179,15 @@
+ {
+ 	int i,j;
+ 
+-	if (ioctl(fd, JSIOCGAXES, &axes)) {
++	if (ioctl(fd, JSIOCGAXES, &axes) < 0) {
+ 		perror("jscal: error getting axes");
+ 		exit(1);
+ 	}
+-	if (ioctl(fd, JSIOCGBUTTONS, &buttons)) {
++	if (ioctl(fd, JSIOCGBUTTONS, &buttons) < 0) {
+ 		perror("jscal: error getting buttons");
+ 		exit(1);
+ 	}
+-	if (ioctl(fd, JSIOCGCORR, &corr)) {
++	if (ioctl(fd, JSIOCGCORR, &corr) < 0) {
+ 		perror("jscal: error getting correction");
+ 		exit(1);
+ 	}
+@@ -218,7 +218,7 @@
+ 		corr[i].prec = 0;
+ 	}
+ 
+-	if (ioctl(fd, JSIOCSCORR, &corr)) {
++	if (ioctl(fd, JSIOCSCORR, &corr) < 0) {
+ 		perror("jscal: error setting correction");
+ 		exit(1);
+ 	}
+@@ -324,7 +324,7 @@
+ 
+ 	putchar('\n');
+ 
+-	if (ioctl(fd, JSIOCSCORR, &corr)) {
++	if (ioctl(fd, JSIOCSCORR, &corr) < 0) {
+ 		perror("jscal: error setting correction");
+ 		exit(1);
+ 	}
+@@ -342,19 +342,19 @@
+ {
+ 	int i;
+ 
+-	if (ioctl(fd, JSIOCGAXES, &axes)) {
++	if (ioctl(fd, JSIOCGAXES, &axes) < 0) {
+ 		perror("jscal: error getting axes");
+ 		exit(1);
+ 	}
+-	if (ioctl(fd, JSIOCGBUTTONS, &buttons)) {
++	if (ioctl(fd, JSIOCGBUTTONS, &buttons) < 0) {
+ 		perror("jscal: error getting buttons");
+ 		exit(1);
+ 	}
+-	if (ioctl(fd, JSIOCGAXMAP, &axmap)) {
++	if (ioctl(fd, JSIOCGAXMAP, &axmap) < 0) {
+ 		perror("jscal: error getting axis map");
+ 		exit(1);
+ 	}
+-	if (ioctl(fd, JSIOCGBTNMAP, &buttonmap)) {
++	if (ioctl(fd, JSIOCGBTNMAP, &buttonmap) < 0) {
+ 	        buttons=0;
+ 	}
+ 
+@@ -376,7 +376,7 @@
+ 
+ void get_axmap2(void)
+ {
+-        if (ioctl(fd, JSIOCGAXMAP, &axmap2)) {
++        if (ioctl(fd, JSIOCGAXMAP, &axmap2) < 0) {
+ 		perror("jscal: error getting axis map");
+ 		exit(1);
+ 	}
+@@ -400,7 +400,7 @@
+ 	        ax[i]=axmes[(axmap[i])];
+ 	}
+ 	//Read again current callibration settings
+-	if (ioctl(fd, JSIOCGCORR, &corr)) {
++	if (ioctl(fd, JSIOCGCORR, &corr) < 0) {
+ 		perror("jscal: error getting correction");
+ 		exit(1);
+ 	}
+@@ -408,7 +408,7 @@
+ 	for (i = 0; i < axes; i++) {
+ 	        corr_tmp[i]=corr[(ax[i])];
+ 	}
+-	if (ioctl(fd, JSIOCSCORR, &corr_tmp)) {
++	if (ioctl(fd, JSIOCSCORR, &corr_tmp) < 0) {
+ 		perror("jscal: error setting correction");
+ 		exit(1);
+ 	}
+@@ -419,15 +419,15 @@
+ {
+ 	int i,j;
+ 
+-	if (ioctl(fd, JSIOCGAXES, &axes)) {
++	if (ioctl(fd, JSIOCGAXES, &axes) < 0) {
+ 		perror("jscal: error getting axes");
+ 		exit(1);
+ 	}
+-	if (ioctl(fd, JSIOCGBUTTONS, &buttons)) {
++	if (ioctl(fd, JSIOCGBUTTONS, &buttons) < 0) {
+ 		perror("jscal: error getting buttons");
+ 		exit(1);
+ 	}
+-	if (ioctl(fd, JSIOCGCORR, &corr)) {
++	if (ioctl(fd, JSIOCGCORR, &corr) < 0) {
+ 		perror("jscal: error getting correction");
+ 		exit(1);
+ 	}
+@@ -451,11 +451,11 @@
+   int axis_mapping = 0;
+   int btn_mapping = 0;
+ 
+-	if (ioctl(fd, JSIOCGAXES, &axes)) {
++	if (ioctl(fd, JSIOCGAXES, &axes) < 0) {
+ 		perror("jscal: error getting axes");
+ 		exit(1);
+ 	}
+-	if (ioctl(fd, JSIOCGBUTTONS, &buttons)) {
++	if (ioctl(fd, JSIOCGBUTTONS, &buttons) < 0) {
+ 		perror("jscal: error getting buttons");
+ 		exit(1);
+ 	}
+@@ -536,7 +536,7 @@
+ 	get_axmap2();
+ 	
+ 	// Apply the new axis map
+-	if (ioctl(fd, JSIOCSAXMAP, &axmap)) {
++	if (ioctl(fd, JSIOCSAXMAP, &axmap) < 0) {
+ 		perror("jscal: error setting axis map");
+ 		exit(1);
+ 	}
+@@ -545,7 +545,7 @@
+ 	correct_axes();
+ 
+ 	if (btns_on_cl!=0){
+-		if (ioctl(fd, JSIOCSBTNMAP, &buttonmap)) {
++		if (ioctl(fd, JSIOCSBTNMAP, &buttonmap) < 0) {
+ 		       perror("jscal: error setting button map");
+ 	               exit(1);
+ 		}
+@@ -557,7 +557,7 @@
+ 	int i,j;
+ 	int t = 0;
+ 
+-	if (ioctl(fd, JSIOCGAXES, &axes)) {
++	if (ioctl(fd, JSIOCGAXES, &axes) < 0) {
+ 		perror("jscal: error getting axes");
+ 		exit(1);
+ 	}
+@@ -618,7 +618,7 @@
+ 		exit(1);
+ 	}
+ 	
+-	if (ioctl(fd, JSIOCSCORR, &corr)) {
++	if (ioctl(fd, JSIOCSCORR, &corr) < 0) {
+ 		perror("jscal: error setting correction");
+ 		exit(1);
+ 	}
+@@ -629,12 +629,12 @@
+ 	int i;
+ 	struct js_event ev;
+ 
+-	if (ioctl(fd, JSIOCGAXES, &axes)) {
++	if (ioctl(fd, JSIOCGAXES, &axes) < 0) {
+ 		perror("jscal: error getting axes");
+ 		exit(1);
+ 	}
+ 
+-	if (ioctl(fd, JSIOCGBUTTONS, &buttons)) {
++	if (ioctl(fd, JSIOCGBUTTONS, &buttons) < 0) {
+ 		perror("jscal: error getting buttons");
+ 		exit(1);
+ 	}
+@@ -735,7 +735,7 @@
+ 		exit(1);
+ 	}
+ 
+-	if (ioctl(fd, JSIOCGVERSION, &version)) {
++	if (ioctl(fd, JSIOCGVERSION, &version) < 0) {
+ 		perror("jscal: error getting version");
+ 		exit(1);
+ 	}
+--- joystick-20051019.orig/utils/inputattach.c
++++ joystick-20051019/utils/inputattach.c
+@@ -281,10 +281,10 @@
+ 	int count, line;
+ 
+ 	/* Turn DTR off, otherwise the Twiddler won't send any data. */
+-	if (ioctl(fd, TIOCMGET, &line))
++	if (ioctl(fd, TIOCMGET, &line) < 0)
+ 		return -1;
+ 	line &= ~TIOCM_DTR;
+-	if (ioctl(fd, TIOCMSET, &line))
++	if (ioctl(fd, TIOCMSET, &line) < 0)
+ 		return -1;
+ 
+ 	/*
+@@ -648,14 +648,14 @@
+ 	}
+ 
+ 	ldisc = N_MOUSE;
+-	if (ioctl(fd, TIOCSETD, &ldisc)) {
++	if (ioctl(fd, TIOCSETD, &ldisc) < 0) {
+ 		fprintf(stderr, "inputattach: can't set line discipline\n");
+ 		return EXIT_FAILURE;
+ 	}
+ 
+ 	devt = type->type | (id << 8) | (extra << 16);
+ 
+-	if (ioctl(fd, SPIOCSTYPE, &devt)) {
++	if (ioctl(fd, SPIOCSTYPE, &devt) < 0) {
+ 		fprintf(stderr, "inputattach: can't set device type\n");
+ 		return EXIT_FAILURE;
+ 	}
+--- joystick-20051019.orig/utils/evtest.c
++++ joystick-20051019/utils/evtest.c
+@@ -317,7 +317,7 @@
+ 		return 1;
+ 	}
+ 
+-	if (ioctl(fd, EVIOCGVERSION, &version)) {
++	if (ioctl(fd, EVIOCGVERSION, &version) < 0) {
+ 		perror("evtest: can't get version");
+ 		return 1;
+ 	}
+--- joystick-20051019.orig/utils/ffcfstress.c
++++ joystick-20051019/utils/ffcfstress.c
+@@ -193,7 +193,7 @@
+ 	effect.u.constant.envelope.fade_level=0;
+ 
+ 	/* Upload effect */
+-	if (ioctl(device_handle,EVIOCSFF,&effect)==-1) {
++	if (ioctl(device_handle,EVIOCSFF,&effect)<0) {
+ 		fprintf(stderr,"ERROR: uploading effect failed (%s) [%s:%d]\n",
+ 		        strerror(errno),__FILE__,__LINE__);
+ 		exit(1);
+@@ -219,7 +219,7 @@
+ 
+ 	/* Delete effect */
+ 	if (stop_and_play && effect.id!=-1) {
+-		if (ioctl(device_handle,EVIOCRMFF,effect.id)==-1) {
++		if (ioctl(device_handle,EVIOCRMFF,effect.id)<0) {
+ 			fprintf(stderr,"ERROR: removing effect failed (%s) [%s:%d]\n",
+ 			        strerror(errno),__FILE__,__LINE__);
+ 			exit(1);
+@@ -236,7 +236,7 @@
+ 	effect.u.constant.envelope.fade_level=(short)(force*32767.0); /* only to be safe */
+ 
+ 	/* Upload effect */
+-	if (ioctl(device_handle,EVIOCSFF,&effect)==-1) {
++	if (ioctl(device_handle,EVIOCSFF,&effect)<0) {
+ 		perror("upload effect");
+ 		/* We do not exit here. Indeed, too frequent updates may be
+ 		 * refused, but that is not a fatal error */
+--- joystick-20051019.orig/utils/fftest.c
++++ joystick-20051019/utils/fftest.c
+@@ -86,7 +86,7 @@
+ 	printf("Device %s opened\n", device_file_name);
+ 
+ 	/* Query device */
+-	if (ioctl(fd, EVIOCGBIT(EV_FF, sizeof(unsigned long) * 4), features) == -1) {
++	if (ioctl(fd, EVIOCGBIT(EV_FF, sizeof(unsigned long) * 4), features) < 0) {
+ 		perror("Ioctl query");
+ 		exit(1);
+ 	}
+@@ -107,7 +107,7 @@
+ 
+ 	printf("\nNumber of simultaneous effects: ");
+ 
+-	if (ioctl(fd, EVIOCGEFFECTS, &n_effects) == -1) {
++	if (ioctl(fd, EVIOCGEFFECTS, &n_effects) < 0) {
+ 		perror("Ioctl number of effects");
+ 	}
+ 
+@@ -131,7 +131,7 @@
+ 	effects[0].replay.length = 20000;  /* 20 seconds */
+ 	effects[0].replay.delay = 0;
+ 
+-	if (ioctl(fd, EVIOCSFF, &effects[0]) == -1) {
++	if (ioctl(fd, EVIOCSFF, &effects[0]) < 0) {
+ 		perror("Upload effects[0]");
+ 	}
+ 	
+@@ -149,7 +149,7 @@
+ 	effects[1].replay.length = 20000;  /* 20 seconds */
+ 	effects[1].replay.delay = 0;
+ 
+-	if (ioctl(fd, EVIOCSFF, &effects[1]) == -1) {
++	if (ioctl(fd, EVIOCSFF, &effects[1]) < 0) {
+ 		perror("Upload effects[1]");
+ 	}
+ 
+@@ -168,7 +168,7 @@
+ 	effects[2].replay.length = 20000;  /* 20 seconds */
+ 	effects[2].replay.delay = 0;
+ 
+-	if (ioctl(fd, EVIOCSFF, &effects[2]) == -1) {
++	if (ioctl(fd, EVIOCSFF, &effects[2]) < 0) {
+ 		perror("Upload effects[2]");
+ 	}
+ 
+@@ -187,7 +187,7 @@
+ 	effects[3].replay.length = 20000;  /* 20 seconds */
+ 	effects[3].replay.delay = 0;
+ 
+-	if (ioctl(fd, EVIOCSFF, &effects[3]) == -1) {
++	if (ioctl(fd, EVIOCSFF, &effects[3]) < 0) {
+ 		perror("Upload effects[3]");
+ 	}
+ 
+@@ -199,7 +199,7 @@
+ 	effects[4].replay.length = 5000;
+ 	effects[4].replay.delay = 1000;
+ 
+-	if (ioctl(fd, EVIOCSFF, &effects[4]) == -1) {
++	if (ioctl(fd, EVIOCSFF, &effects[4]) < 0) {
+ 		perror("Upload effects[4]");
+ 	}
+ 
+@@ -211,7 +211,7 @@
+ 	effects[5].replay.length = 5000;
+ 	effects[5].replay.delay = 0;
+ 
+-	if (ioctl(fd, EVIOCSFF, &effects[5]) == -1) {
++	if (ioctl(fd, EVIOCSFF, &effects[5]) < 0) {
+ 		perror("Upload effects[5]");
+ 	}
+ 

@@ -1,0 +1,14 @@
+update-inputattach.patch
+jitter-tolerance.patch
+button-axis-remapping.patch
+usb-joystick-segfault-fix.patch
+eviocgbit-buffer.patch
+sahara-touchit-213.patch
+sync-serio-2.6.29.patch
+remap-calibration.patch
+button-map-segfault-fix.patch
+ioctl-error-handling.patch
+fix-warnings.patch
+jskeepalive.patch
+evtest-flush-stdout.patch
+handle-max-axes.patch
