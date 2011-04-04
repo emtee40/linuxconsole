@@ -11,7 +11,6 @@ It was downloaded from CVS on http://linuxconsole.sourceforge.net/
 
 Copyright:
 
-    acceltest.c   Copyright © 2001 Romain Dolbeau <dolbeau@irisa.fr>
     evtest.c      Copyright © 1999-2000 Vojtech Pavlik
     ffcfstress.c  Copyright © 2001 Oliver Hamann
     ffmvforce.c   Copyright © 2001 Johann Deneux <deneux@ifrance.com>
@@ -21,11 +20,10 @@ Copyright:
       Twiddler support Copyright © 2001 Arndt Schoenewald
     jscal.c       Copyright © 1997-1999 Vojtech Pavlik
     jstest.c      Copyright © 1996-1999 Vojtech Pavlik
-    jskeepalive.c Copyright © 2010 Stephen Kitt
     
     Packaging     Copyright © 1997-1998 Frederic Lepied
                   Copyright © 2000-2005 Edward Betts
-                  Copyright © 2008-2009 Stephen Kitt
+                  Copyright © 2008-2011 Stephen Kitt
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
