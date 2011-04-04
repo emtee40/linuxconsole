@@ -12,4 +12,6 @@ configure a Mouse Systems mouse on the first serial port:
  * in /etc/rc.local
 	inputattach --daemon -msc /dev/ttyS0
  * or in /etc/udev/010_local.rules
-	ACTION="add", KERNEL=="ttyS0", RUN+="inputattach --daemon -msc %p"
+	ACTION="add", KERNEL=="ttyS0", RUN+="/lib/udev/inputattach --daemon -msc %p"
+The udev rule uses the provided inputattach agent to wait until
+inputattach becomes available before attempting to run it.
