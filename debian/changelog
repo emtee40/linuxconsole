@@ -1,3 +1,17 @@
+joystick (1:1.4~rc1-1) unstable; urgency=low
+
+  * New upstream version:
+    - Builds with --as-needed. Closes: #607009.
+    - inputattach supports W8001. Closes: #616443.
+    - inputattach supports Zhen-Hua. LP: #648945.
+    - evtest decodes numeric key events. Closes: #619932.
+  * Drop all patches, merged upstream. Drop README.source explaining quilt
+    usage, and --with-quilt directive to sh.
+  * Drop manpages, merged upstream.
+  * Drop store/restore tools, merged upstream.
+
+ -- Stephen Kitt <steve@sk2.org>  Mon, 04 Apr 2011 15:46:53 +0200
+
 joystick (20051019-12) unstable; urgency=low
 
   * Use the correct maximum number of axes. LP: #595767.

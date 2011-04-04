@@ -1,4 +1,12 @@
 #!/usr/bin/make -f
 
 %:
-	dh --with-quilt --sourcedirectory=utils $@
+	PREFIX=/usr dh $@
+
+override_dh_install:
+	dh_install
+	install -d debian/joystick/lib/udev
+	install -m755 debian/jscal-restore.udev.script debian/joystick/lib/udev/jscal-restore
+	install -m755 debian/js-acrux.udev.script debian/joystick/lib/udev/js-acrux
+	install -d debian/inputattach/lib/udev
+	install -m755 debian/inputattach.udev.script debian/inputattach/lib/udev/inputattach
