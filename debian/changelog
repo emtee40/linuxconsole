@@ -1,3 +1,9 @@
+joystick (1:1.4-1) unstable; urgency=low
+
+  * Upstream release.
+
+ -- Stephen Kitt <steve@sk2.org>  Mon, 20 Jun 2011 21:10:19 +0200
+
 joystick (1:1.4~rc1-1) unstable; urgency=low
 
   * New upstream version:
