@@ -6,6 +6,7 @@ joystick (1:1.4-1) unstable; urgency=low
   * Provide default udev rules for Wacom W8001 devices (thanks to
     Alexander Clouter, Brian Murray and Kees Cook).
   * Add upstream homepage.
+  * Standards-Version 3.9.2, no change required.
 
  -- Stephen Kitt <steve@sk2.org>  Mon, 20 Jun 2011 21:10:19 +0200
 
