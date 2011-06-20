@@ -1,15 +1,16 @@
 			  linuxconsole tools
-			    Release 1.4rc1
+			     Release 1.4
+		 http://sf.net/projects/linuxconsole/
 
 
 This package contains the following utilities and associated
 documentation:
-* evtest - input layer event monitor
 * inputattach - connects legacy serial devices to the input layer
 * joystick utilities - calibrate and test joysticks and joypads
 
-The evtest and inputattach manpages provide more details on their
-operation.
+The evtest tool, which used to be part of this package, is now
+maintained separately at http://cgit.freedesktop.org/evtest/ and
+https://bugzilla.freedesktop.org/enter_bug.cgi?product=evtest
 
 
 Joystick utilities
@@ -37,7 +38,14 @@ The typical scenario when configuring a new device is as follows:
 Installation
 ------------
 
+Most of the utilities have no particular requirement beyond a libc and
+the Linux input layer headers (normally part of your libc
+installation). ffmvforce requires SDL (libsdl1.2-dev on Debian
+derivatives).
+
 To install the utilities and their manpages, run
+	make
+and then as root
 	make install
 from the distribution's top directory. This will install everything
 into /usr/local. Should you wish to install the tools elsewhere, you
@@ -89,17 +97,17 @@ and change the udev rule to
 	KERNEL=="js*", ACTION=="add", RUN+="/lib/udev/jscal-restore %E{DEVNAME}"
 
 The following rule forces flaky Acrux gamepads to stay awake:
-	KERNEL=="js*", ACTION=="add", ATTRS{name}=="ACRUX USB GAMEPAD 8116", RUN+="/bin/sleep 5000 < %p"
+	KERNEL=="js*", ACTION=="add", ATTRS{name}=="ACRUX USB GAMEPAD 8116", RUN+="/bin/sleep 5000 < /dev/%k"
 (This should only be necessary on kernels older than 2.6.39-rc1.)
 
 The following rule configures a Mouse Systems mouse on the first
 serial port:
-	KERNEL=="ttyS0", ACTION=="add", RUN+="/usr/bin/inputattach --daemon -msc %p"
+	KERNEL=="ttyS0", ACTION=="add", RUN+="/usr/bin/inputattach --daemon -msc /dev/%k"
 If you need to wait for /usr you can adapt the recipe above.
 
 The following rules configures a Wacom W8001 devices on a Fujitsu
-T2010[2]:
-	SUBSYSTEM=="tty", KERNEL=="ttyS[0-9]*", ATTRS{id}=="FUJ02e5", ACTION=="add", RUN+="/usr/bin/inputattach --daemon --baud 19200 --w8001 /dev/%k"
+T2010[2] or on Lenovo X200-series laptops and tablets:
+	SUBSYSTEM=="tty", KERNEL=="ttyS[0-9]*", ATTRS{id}=="FUJ02e5|WACf00c", ACTION=="add|change", RUN+="/usr/bin/inputattach --daemon --baud 19200 --w8001 /dev/%k"
 
 
 Contributors
@@ -117,6 +125,8 @@ The following people have contributed to this release:
 * Roberto Neri: much discussion, and fixes and improvements to
   jscal-store/jscal-restore and the udev rules given above.
 * Jean Delvare: inputattach improvements, TAOS support.
+* Brian Murray and Kees Cook: Lenovo W8001 support.
+* Raoul Bönish: fixes for the udev rules.
 
 
 License
@@ -124,7 +134,6 @@ License
 
 The linuxconsole tools are
 	Copyright © 1996-2005 Vojtech Pavlik
-	Copyright © 2001 Romain Dolbeau
 	Copyright © 2001 Oliver Hamann
 	Copyright © 2001-2002 Johann Deneux
 	Copyright © 2001 Arndt Schoenewald

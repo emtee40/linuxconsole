@@ -1,5 +1,5 @@
 #
-# $Id: Makefile 2416 2011-04-03 21:58:49Z skitt $
+# $Id: Makefile 2421 2011-04-05 07:24:27Z skitt $
 #
 # Makefile for Linux input utilities
 #
@@ -28,7 +28,7 @@
 CC		= gcc
 CFLAGS		= -g -O2 -Wall -I../linux/include
 
-PROGRAMS	= evtest inputattach jstest jscal fftest ffmvforce ffset \
+PROGRAMS	= inputattach jstest jscal fftest ffmvforce ffset \
 		  ffcfstress jscal-restore jscal-store
 
 PREFIX          ?= /usr/local
