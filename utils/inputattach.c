@@ -1,5 +1,5 @@
 /*
- * $Id: inputattach.c 2412 2011-04-02 12:45:20Z skitt $
+ * $Id: inputattach.c 2422 2011-05-16 21:05:54Z skitt $
  *
  *  Copyright (c) 1999-2000 Vojtech Pavlik
  *
@@ -738,7 +738,7 @@ int main(int argc, char **argv)
 		retval = EXIT_FAILURE;
 	}
 
-	read(fd, NULL, 0);
+	for (errno = 0; errno != EINTR; read(fd, NULL, 0)) ;
 
 	ldisc = 0;
 	ioctl(fd, TIOCSETD, &ldisc);
