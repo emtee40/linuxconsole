@@ -12,6 +12,11 @@ configure a Mouse Systems mouse on the first serial port:
  * in /etc/rc.local
 	inputattach --daemon -msc /dev/ttyS0
  * or in /etc/udev/010_local.rules
-	ACTION="add", KERNEL=="ttyS0", RUN+="/lib/udev/inputattach --daemon -msc %p"
+	ACTION=="add", KERNEL=="ttyS0", RUN+="/lib/udev/inputattach --daemon -msc /dev/%k"
 The udev rule uses the provided inputattach agent to wait until
 inputattach becomes available before attempting to run it.
+
+This package includes a udev rule to automatically attach Wacom W8001
+devices on Fujitsu T2010 or Lenovo X200-series laptops and tablets.
+
+ -- Stephen Kitt <steve@sk2.org>, Mon, 20 Jun 2011 23:37:13 +0200
