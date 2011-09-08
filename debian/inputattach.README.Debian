@@ -16,7 +16,11 @@ configure a Mouse Systems mouse on the first serial port:
 The udev rule uses the provided inputattach agent to wait until
 inputattach becomes available before attempting to run it.
 
-This package includes a udev rule to automatically attach Wacom W8001
+This package includes udev rules to automatically attach Wacom W8001
 devices on Fujitsu T2010 or Lenovo X200-series laptops and tablets.
+These rules conflict with versions of xserver-xorg-wacom matching WACf
+or FUJ02e5 in a MatchProduct line; to use the tablets with
+inputattach, the matching identifiers in the MatchProduct line must be
+removed so that the evdev driver is used in X.org.
 
- -- Stephen Kitt <steve@sk2.org>, Mon, 20 Jun 2011 23:37:13 +0200
+ -- Stephen Kitt <steve@sk2.org>, Thu,  8 Sep 2011 07:23:48 +0200
