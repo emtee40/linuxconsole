@@ -1,5 +1,5 @@
 /*
- * $Id: inputattach.c 2427 2011-06-25 13:16:57Z skitt $
+ * $Id: inputattach.c 2429 2011-08-09 05:43:09Z skitt $
  *
  *  Copyright (c) 1999-2000 Vojtech Pavlik
  *
@@ -626,6 +626,7 @@ int main(int argc, char **argv)
 	int baud = -1;
 	int ignore_init_res = 0;
 	int no_init = 0;
+	int one_read = 0;
 
 	for (i = 1; i < argc; i++) {
 		if (!strcasecmp(argv[i], "--help")) {
@@ -746,11 +747,17 @@ int main(int argc, char **argv)
 		if (i == -1) {
 			if (RETRY_ERROR(errno))
 				continue;
+		} else {
+			one_read = 1;
 		}
 	} while (!i);
 
 	ldisc = 0;
-	ioctl(fd, TIOCSETD, &ldisc);
+	if (one_read) {
+		// If we've never managed to read, avoid resetting the line
+		// discipline - another inputattach is probably running
+		ioctl(fd, TIOCSETD, &ldisc);
+	}
 	close(fd);
 
 	return retval;
