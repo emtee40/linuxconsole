@@ -1,3 +1,11 @@
+joystick (1:1.4.1-1) unstable; urgency=low
+
+  * New upstream release:
+    - Handles other retry errors correctly (thanks to Alexander Clouter
+      for the patch). Closes: #631608.
+
+ -- Stephen Kitt <steve@sk2.org>  Sat, 25 Jun 2011 15:42:13 +0200
+
 joystick (1:1.4-1) unstable; urgency=low
 
   * Upstream release.
