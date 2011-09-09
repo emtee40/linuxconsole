@@ -1,2 +1,9 @@
-debian/tmp/usr/bin/{ffcfstress,ffmvforce,ffset,fftest,jscal,jscal-restore,jscal-store,jstest}
+debian/tmp/usr/bin/ffcfstress
+debian/tmp/usr/bin/ffmvforce
+debian/tmp/usr/bin/ffset
+debian/tmp/usr/bin/fftest
+debian/tmp/usr/bin/jscal
+debian/tmp/usr/bin/jscal-restore
+debian/tmp/usr/bin/jscal-store
+debian/tmp/usr/bin/jstest
 debian/tmp/usr/share/joystick/*

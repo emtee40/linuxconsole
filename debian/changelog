@@ -7,6 +7,7 @@ joystick (1:1.4.2-1) unstable; urgency=low
     - Creates /var/lib/joystick/ if necessary. Closes: #632623.
     - inputattach avoids resetting the line discipline if the device is
       already in use. Closes: #630173.
+  * Remove braces in joystick.install and joystick.manpages.
 
  -- Stephen Kitt <steve@sk2.org>  Thu, 08 Sep 2011 07:25:39 +0200
 

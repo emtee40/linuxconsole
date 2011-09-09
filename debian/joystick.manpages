@@ -1,1 +1,8 @@
-debian/tmp/usr/share/man/man1/{ffcfstress,ffmvforce,ffset,fftest,jscal,jscal-restore,jscal-store,jstest}.1
+debian/tmp/usr/share/man/man1/ffcfstress.1
+debian/tmp/usr/share/man/man1/ffmvforce.1
+debian/tmp/usr/share/man/man1/ffset.1
+debian/tmp/usr/share/man/man1/fftest.1
+debian/tmp/usr/share/man/man1/jscal.1
+debian/tmp/usr/share/man/man1/jscal-restore.1
+debian/tmp/usr/share/man/man1/jscal-store.1
+debian/tmp/usr/share/man/man1/jstest.1
