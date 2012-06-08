@@ -1,5 +1,5 @@
 #
-# $Id: Makefile 2421 2011-04-05 07:24:27Z skitt $
+# $Id$
 #
 # Makefile for Linux input utilities
 #
