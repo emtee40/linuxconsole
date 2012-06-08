@@ -1,6 +1,7 @@
 joystick (1:1.4.3-1) UNRELEASED; urgency=low
 
   * New upstream release.
+  * Enable hardened build using debhelper 9.
 
  -- Stephen Kitt <steve@sk2.org>  Fri, 08 Jun 2012 07:08:01 +0200
 
