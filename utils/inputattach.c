@@ -1,5 +1,5 @@
 /*
- * $Id: inputattach.c 2429 2011-08-09 05:43:09Z skitt $
+ * $Id$
  *
  *  Copyright (c) 1999-2000 Vojtech Pavlik
  *
@@ -326,6 +326,24 @@ static int twiddler_init(int fd, unsigned long *id, unsigned long *extra)
 	return 0;
 }
 
+static int pm6k_init(int fd, unsigned long *id, unsigned long *extra)
+{
+	int i = 0;
+	unsigned char cmd[6] = {0xF1, 0x00, 0x00, 0x00, 0x00, 0x0E};
+	unsigned char data[6] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+	/* Enable the touchscreen */
+	if (write(fd, cmd, sizeof(cmd)) != sizeof(cmd))
+		return -1;
+
+	/* Read ACK */
+	for(i=0;i<sizeof(data);i++)
+		if (readchar(fd, &data[i], 100)<0)
+			break ;
+
+	return 0;
+}
+
 static int fujitsu_init(int fd, unsigned long *id, unsigned long *extra)
 {
 	unsigned char cmd, data;
@@ -349,6 +367,82 @@ static int fujitsu_init(int fd, unsigned long *id, unsigned long *extra)
 
 	/* Read status */
 	if (readchar(fd, &data, 100) || data != 0x00)
+		return -1;
+
+	return 0;
+}
+
+static int tsc40_init(int fd, unsigned long *id, unsigned long *extra)
+{
+	unsigned char cmd[2], data;
+	unsigned int eeprom;
+
+	/* Datasheet can be found here:
+	 * http://www.distec.de/PDF/Drivers/DMC/TSC40_Protocol_Description.pdf
+	 */
+
+#define TSC40_CMD_DATA1	0x01
+#define TSC40_CMD_RATE	0x05
+#define TSC40_CMD_ID	0x15
+#define TSC40_CMD_RESET	0x55
+
+#define TSC40_RATE_150	0x45
+#define TSC40_NACK	0x15
+
+	/* trigger a software reset to get into a well known state */
+	cmd[0] = TSC40_CMD_RESET;
+	if (write(fd, cmd, 1) != 1)
+		return -1;
+	
+	/* wait to settle down */
+	usleep(15 * 1000); /* 15 ms */	
+	
+	/* read panel ID to check if an EEPROM is used */
+	cmd[0] = TSC40_CMD_ID;
+	if (write(fd, cmd, 1) != 1)
+		return -1;
+	
+	if (readchar(fd, &data, 100))
+		return -1;
+
+	/* if bit7 is not set --> EEPROM is used */
+	eeprom = !((data & 0x80) >> 7);
+	
+	/* ignore 2nd byte of ID cmd */
+	if (readchar(fd, &data, 100))
+		return -1;
+	
+	/* set coordinate oupt rate setting */
+	cmd[0] = TSC40_CMD_RATE;
+	cmd[1] = TSC40_RATE_150;
+	if (write(fd, cmd, 2) != 2)
+		return -1;
+	
+	/* read response */
+	if (readchar(fd, &data, 100))
+		return -1;
+	
+	if ((data == TSC40_NACK) && (eeprom == 1)) {
+		/* get detailed failure information */
+		if (readchar(fd, &data, 100))
+			return -1;
+
+		switch (data) {
+		case 0x02:	/* EEPROM data abnormal */
+		case 0x04:	/* EEPROM write error */
+		case 0x08:	/* Touch screen not connected */
+			return -1;
+			break;
+			
+		default:
+			/* 0x01: EEPROM data empty */
+			break;
+		}
+	}
+
+	/* start sending coordinate informations */
+	cmd[0] = TSC40_CMD_DATA1;
+	if (write(fd, cmd, 1) != 1)
 		return -1;
 
 	return 0;
@@ -556,6 +650,9 @@ static struct input_types input_types[] = {
 { "--mtouch",		"-mtouch",	"MicroTouch (3M) touchscreen",
 	B9600, CS8 | CRTSCTS,
 	SERIO_MICROTOUCH,	0x00,	0x00,	0,	NULL },
+{ "--tsc",		"-tsc",		"TSC-10/25/40 serial touchscreen",
+	B9600, CS8,
+	SERIO_TSC40,		0x00,	0x00,	0,	tsc40_init },
 { "--touchit213",	"-t213",	"Sahara Touch-iT213 Tablet PC",
 	B9600, CS8,
 	SERIO_TOUCHIT213,	0x00,	0x00,	0,	t213_init },
@@ -565,9 +662,18 @@ static struct input_types input_types[] = {
 { "--touchwin",		"-tw",	"Touchwindow serial touchscreen",
 	B4800, CS8 | CRTSCTS,
 	SERIO_TOUCHWIN,		0x00,	0x00,	0,	NULL },
-{ "--penmount",		"-pm",	"Penmount touchscreen",
-	B19200, CS8 | CRTSCTS,
+{ "--penmount9000",		"-pm9k",	"PenMount 9000 touchscreen",
+	B19200, CS8,
 	SERIO_PENMOUNT,		0x00,	0x00,	0,	NULL },
+{ "--penmount6000",		"-pm6k",	"PenMount 6000 touchscreen",
+	B19200, CS8,
+	SERIO_PENMOUNT,		0x01,	0x00,	0,	pm6k_init },
+{ "--penmount3000",		"-pm3k",	"PenMount 3000 touchscreen",
+	B38400, CS8,
+	SERIO_PENMOUNT,		0x02,	0x00,	0,	NULL },
+{ "--penmount6250",		"-pmm1",	"PenMount 6250 touchscreen",
+	B19200, CS8,
+	SERIO_PENMOUNT,		0x03,	0x00,	0,	NULL },
 { "--fujitsu",		"-fjt",	"Fujitsu serial touchscreen",
 	B9600, CS8,
 	SERIO_FUJITSU,		0x00,	0x00,	1,	fujitsu_init },
