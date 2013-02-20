@@ -1,6 +1,7 @@
 joystick (1:1.4.5-1) UNRELEASED; urgency=low
 
   * New upstream release.
+  * Drop hardening.patch, merged upstream.
 
  -- Stephen Kitt <steve@sk2.org>  Wed, 20 Feb 2013 21:16:05 +0100
 
