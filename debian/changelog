@@ -1,6 +1,7 @@
 joystick (1:1.4.5-1) UNRELEASED; urgency=low
 
-  * New upstream release.
+  * New upstream release:
+    - Disable CRTSCTS on ELO touchscreens. Closes: #699030.
   * Drop hardening.patch, merged upstream.
   * Standards-Version 3.9.4, no change required.
 
