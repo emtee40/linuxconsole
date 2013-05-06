@@ -1,7 +1,7 @@
 Source: joystick
 Section: utils
 Priority: extra
-Maintainer: Stephen Kitt <steve@sk2.org>
+Maintainer: Stephen Kitt <skitt@debian.org>
 Standards-Version: 3.9.4
 Build-Depends: debhelper (>= 9), libsdl1.2-dev
 Homepage: https://sourceforge.net/projects/linuxconsole/
