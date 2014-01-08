@@ -3,6 +3,7 @@ joystick (1:1.4.7-1) UNRELEASED; urgency=medium
   * New upstream release:
     - Fix Spaceball 4000FLX initialization with newer firmware.
       Closes: #298494. Thanks Andrew Basterfield!
+  * Standards-Version 3.9.5, no change required.
 
  -- Stephen Kitt <skitt@debian.org>  Wed, 08 Jan 2014 07:42:58 +0100
 
