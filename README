@@ -1,5 +1,5 @@
 			  linuxconsole tools
-			    Release 1.4.6
+			    Release 1.4.7
 		 http://sf.net/projects/linuxconsole/
 
 
@@ -143,6 +143,7 @@ The following people have contributed to this release:
 * Jaromir Capik: 64-bit fixes and changes from ff-utils (based on a
   patch originally by Jean-Philippe Meure).
 * Ralf Jung: fixes for long device names.
+* Andrew Basterfield: fix for Spaceball 4000FLX support.
 
 
 License
@@ -153,7 +154,7 @@ The linuxconsole tools are
 	Copyright © 2001 Oliver Hamann
 	Copyright © 2001-2002 Johann Deneux
 	Copyright © 2001 Arndt Schoenewald
-	Copyright © 2008-2013 Stephen Kitt
+	Copyright © 2008-2014 Stephen Kitt
 
 
 This program is free software; you can redistribute it and/or modify
