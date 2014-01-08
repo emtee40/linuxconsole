@@ -1,3 +1,11 @@
+joystick (1:1.4.7-1) UNRELEASED; urgency=medium
+
+  * New upstream release:
+    - Fix Spaceball 4000FLX initialization with newer firmware.
+      Closes: #298494. Thanks Andrew Basterfield!
+
+ -- Stephen Kitt <skitt@debian.org>  Wed, 08 Jan 2014 07:42:58 +0100
+
 joystick (1:1.4.6-1) unstable; urgency=low
 
   * New upstream release:
