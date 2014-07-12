@@ -9,7 +9,7 @@ Vcs-Git: git://anonscm.debian.org/collab-maint/joystick.git
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/joystick.git
 
 Package: joystick
-Architecture: any
+Architecture: linux-any
 Depends: ${shlibs:Depends}, ${misc:Depends} 
 Recommends: evtest, inputattach
 Description: set of testing and calibration tools for joysticks
@@ -25,7 +25,7 @@ Description: set of testing and calibration tools for joysticks
  available separately.
 
 Package: inputattach
-Architecture: any
+Architecture: linux-any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Breaks: joystick (<< 20051019-6)
 Description: utility to connect serial-attached peripherals to the input subsystem
