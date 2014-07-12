@@ -1,10 +1,10 @@
-joystick (1:1.4.7-2) UNRELEASED; urgency=medium
+joystick (1:1.4.7-2) unstable; urgency=medium
 
   * Change the architecture to "linux-any" since both packages are
     Linux-specific.
   * Add upstream signing key.
 
- -- Stephen Kitt <skitt@debian.org>  Sat, 12 Jul 2014 07:08:15 +0200
+ -- Stephen Kitt <skitt@debian.org>  Sat, 12 Jul 2014 07:17:59 +0200
 
 joystick (1:1.4.7-1) unstable; urgency=medium
 
