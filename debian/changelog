@@ -1,8 +1,9 @@
-joystick (1:1.4.7-3) UNRELEASED; urgency=medium
+joystick (1:1.4.8-1) UNRELEASED; urgency=medium
 
+  * New upstream release.
   * Export upstream signing key using export-minimal.
 
- -- Stephen Kitt <skitt@debian.org>  Wed, 24 Sep 2014 20:24:05 +0200
+ -- Stephen Kitt <skitt@debian.org>  Sun, 26 Apr 2015 18:30:53 +0200
 
 joystick (1:1.4.7-2) unstable; urgency=medium
 
