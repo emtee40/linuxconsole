@@ -4,3 +4,8 @@ ACTION=="add", KERNEL=="js*", RUN+="/lib/udev/jscal-restore %E{DEVNAME}"
 # Avoid this specific gamepad disappearing (see
 # https://bugs.launchpad.net/ubuntu/+source/joystick/+bug/448446)
 ACTION=="add", KERNEL=="js*", ATTRS{name}=="ACRUX USB GAMEPAD 8116", RUN+="/lib/udev/js-acrux %E{DEVNAME}"
+
+# Set PS3 controller leds to the same value bluez will choose for it.
+# IMPORT{parent} used because $parent did not appear to be working; we
+# don't need the devpath of the js device for this so it is OK to overwrite.
+ACTION=="add", KERNEL=="js*", IMPORT{parent}="DEVPATH", ATTRS{name}=="Sony PLAYSTATION(R)3 Controller", RUN+="/lib/udev/js-set-enum-leds /sys/%E{DEVPATH}/device/leds/ $number"

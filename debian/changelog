@@ -2,6 +2,7 @@ joystick (1:1.4.8-1) UNRELEASED; urgency=medium
 
   * New upstream release.
   * Export upstream signing key using export-minimal.
+  * Install js-set-enum-leds.
 
  -- Stephen Kitt <skitt@debian.org>  Sun, 26 Apr 2015 18:30:53 +0200
 
