@@ -2,6 +2,7 @@ joystick (1:1.4.8-2) UNRELEASED; urgency=medium
 
   * Add pm-utils script to re-start inputattach after waking from
     suspend. Closes: #799279. Thanks to John Morris for the fix!
+  * Rewrite debian/copyright in DEP5 format.
 
  -- Stephen Kitt <skitt@debian.org>  Sat, 26 Sep 2015 15:04:01 +0200
 
