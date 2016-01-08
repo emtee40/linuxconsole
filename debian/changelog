@@ -7,6 +7,8 @@ joystick (1:1.4.8-3) UNRELEASED; urgency=medium
     Closes: #810115.
   * Drop joystick preinst and postinst, they were only needed for
     upgrades to Squeeze.
+  * Drop the workaround for Acrux gamepads, they've been supported by
+    the kernel since 2.6.39.
 
  -- Stephen Kitt <skitt@debian.org>  Fri, 08 Jan 2016 23:01:29 +0100
 
