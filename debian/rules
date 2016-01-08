@@ -3,6 +3,10 @@
 %:
 	PREFIX=/usr dh $@
 
+override_dh_auto_build:
+	dh_auto_build
+	debian/generate_rules.py
+
 override_dh_install:
 	dh_install
 	install -d debian/joystick/lib/udev

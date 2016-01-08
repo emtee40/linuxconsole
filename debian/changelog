@@ -1,3 +1,9 @@
+joystick (1:1.4.8-3) UNRELEASED; urgency=medium
+
+  * Install Denilson Figueiredo de Sá's blacklist. Closes: #714399.
+
+ -- Stephen Kitt <skitt@debian.org>  Fri, 08 Jan 2016 23:01:29 +0100
+
 joystick (1:1.4.8-2) unstable; urgency=medium
 
   * Add pm-utils script to re-start inputattach after waking from

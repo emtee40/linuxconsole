@@ -29,6 +29,15 @@ Copyright: 1997-1998 Frederic Lepied
 	   2008-2015 Stephen Kitt
 License: GPL-2+
 
+Files: debian/generate_rules.py
+Copyright: 2015 Denilson Figueiredo de Sá
+Comment:
+ Copied from
+ https://github.com/denilsonsa/udev-joystick-blacklist
+License: public-domain
+ Public domain. Feel free to use this project for whatever purpose you
+ want.
+
 License: GPL-2+
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
