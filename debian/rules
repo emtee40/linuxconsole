@@ -10,9 +10,6 @@ override_dh_auto_build:
 override_dh_install:
 	dh_install
 	install -d debian/joystick/lib/udev
-	install -m755 debian/jscal-restore.udev.script debian/joystick/lib/udev/jscal-restore
 	install -m755 debian/js-acrux.udev.script debian/joystick/lib/udev/js-acrux
-	install -d debian/inputattach/lib/udev
-	install -m755 debian/inputattach.udev.script debian/inputattach/lib/udev/inputattach
 	install -d debian/inputattach/usr/lib/pm-utils/sleep.d
 	install -m755 debian/inputattach.sleep.d debian/inputattach/usr/lib/pm-utils/sleep.d/40inputattach

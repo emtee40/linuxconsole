@@ -1,5 +1,5 @@
 # Restore any stored calibration for the device
-ACTION=="add", KERNEL=="js*", RUN+="/lib/udev/jscal-restore %E{DEVNAME}"
+ACTION=="add", KERNEL=="js*", RUN+="/usr/bin/jscal-restore %E{DEVNAME}"
 
 # Avoid this specific gamepad disappearing (see
 # https://bugs.launchpad.net/ubuntu/+source/joystick/+bug/448446)

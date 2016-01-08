@@ -1,6 +1,10 @@
 joystick (1:1.4.8-3) UNRELEASED; urgency=medium
 
   * Install Denilson Figueiredo de Sá's blacklist. Closes: #714399.
+  * Assume /usr is mounted before the udev rules are invoked, which allows
+    the udev helper scripts to be removed and thus
+    /lib/udev/hotplug.functions to no longer be required.
+    Closes: #810115.
 
  -- Stephen Kitt <skitt@debian.org>  Fri, 08 Jan 2016 23:01:29 +0100
 
