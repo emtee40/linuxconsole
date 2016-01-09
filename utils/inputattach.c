@@ -43,6 +43,9 @@
 #include <sys/ioctl.h>
 #include <termios.h>
 #include <unistd.h>
+#ifdef SYSTEMD_SUPPORT
+#include <systemd/sd-daemon.h>
+#endif
 
 static int readchar(int fd, unsigned char *c, int timeout)
 {
@@ -622,6 +625,82 @@ static int wacom_iv_init(int fd, unsigned long *id, unsigned long *extra)
 	return 0;
 }
 
+#ifdef SERIO_EGALAX
+
+static int check_egalax_response(int fd, unsigned char *command, int sz, unsigned char *response) {
+	int pos = 0;
+	int error = 0;
+	int rest_length;
+
+	if (write(fd, command, sz) != sz)
+		return -1;
+
+	for (pos = 0; pos < 3; pos++) {
+		if (readchar(fd, &response[pos], 100)) {
+			error = 1;
+			break;
+		}
+	}
+
+	if (error)
+		return -1;
+
+	rest_length = response[1] - 1;
+
+	for (; rest_length; rest_length--, pos++) {
+		if (readchar(fd, &response[pos], 100)) {
+			error = 1;
+			break;
+		}
+	}
+
+	if (error)
+		return -1;
+
+	if (response[1] >= command[1] &&
+		response[0] == command[0] &&
+		response[2] == command[2])
+		return 0;
+
+	return -1;
+}
+
+static int egalax_init(int fd, unsigned long *id, unsigned long *extra) {
+	unsigned char packet_alive_query[3] = { 0x0a, 0x01, 'A' };
+	unsigned char packet_fw_ver[3] = { 0x0a, 0x01, 'D' };
+	unsigned char packet_ctrl_type[3] = { 0x0a, 0x01, 'E' };
+	unsigned char response[128];
+
+	if (check_egalax_response(fd, packet_alive_query, sizeof(packet_alive_query), response))
+		return -1;
+
+	if (check_egalax_response(fd, packet_fw_ver, sizeof(packet_fw_ver), response))
+		return -1;
+
+#if 0
+	/* Log the firmware version */
+	response[(unsigned char)response[1] + 2] = '\0';
+	printf("EETI eGalaxTouch firmware: %s\n", &response[3]);
+#endif
+
+	if (check_egalax_response(fd, packet_ctrl_type, sizeof(packet_ctrl_type), response))
+		return -1;
+
+#if 0
+	/*
+	 * Log the controller type. Maybe it will be useful
+	 * later to detect the multitouch controllers and
+	 * handle it in the kernel driver.
+	 */
+	response[(unsigned char)response[1] + 2] = '\0';
+	printf("EETI eGalaxTouch controller type: %s\n", &response[3]);
+#endif
+
+	return 0;
+}
+
+# endif /* SERIO_EGALAX */
+
 struct input_types {
 	const char *name;
 	const char *name2;
@@ -676,6 +755,9 @@ static struct input_types input_types[] = {
 { "--mouseman",		"-mman",	"3-button Logitech / Genius mouse",
 	B1200, CS7,
 	SERIO_MP,		0x00,	0x01,	1,	NULL },
+{ "--mouseman4",	"-mman4",	"4-button Logitech / Genius mouse",
+	B1200, CS7,
+	SERIO_MP,		0x00,	0x03,	1,	NULL },
 { "--intellimouse",	"-ms3",		"Microsoft IntelliMouse",
 	B1200, CS7,
 	SERIO_MZ,		0x00,	0x11,	1,	NULL },
@@ -704,6 +786,11 @@ static struct input_types input_types[] = {
 { "--twiddler-joy",	"-twidjoy",	"Handykey Twiddler used as a joystick",
 	B2400, CS8,
 	SERIO_TWIDJOY,		0x00,	0x00,	0,	twiddler_init },
+#ifdef SERIO_EGALAX
+{ "--eetiegalax",	"-eeti",	"EETI eGalaxTouch",
+	B9600, CS8,
+	SERIO_EGALAX,		0x00,	0x00,	0,	egalax_init },
+#endif
 { "--elotouch",		"-elo",		"ELO touchscreen, 10-byte mode",
 	B9600, CS8,
 	SERIO_ELO,		0x00,	0x00,	0,	NULL },
@@ -716,6 +803,9 @@ static struct input_types input_types[] = {
 { "--elo261-280",	"-elo3b",	"ELO Touchscreen, 3-byte mode",
 	B9600, CS8 | CRTSCTS,
 	SERIO_ELO,		0x03,	0x00,	0,	NULL },
+{ "--hampshire",   "-ham",         "Hampshire touchscreen",
+	B9600, CS8,
+	SERIO_HAMPSHIRE,	0x00,   0x00,   0,  NULL },
 { "--mtouch",		"-mtouch",	"MicroTouch (3M) touchscreen",
 	B9600, CS8 | CRTSCTS,
 	SERIO_MICROTOUCH,	0x00,	0x00,	0,	NULL },
@@ -768,7 +858,7 @@ static struct input_types input_types[] = {
 { "--w8001",		"-w8001",	"Wacom W8001",
 	B38400, CS8,
 	SERIO_W8001,		0x00,	0x00,	0,	NULL },
-{ "--wacom_iv",		"-wacom_iv",	"Wacom protocol 4 tablet",
+{ "--wacom_iv",		"-wacom_iv",	"Wacom protocol IV tablet",
 	B9600, CS8 | CRTSCTS,
 	SERIO_WACOM_IV,		0x00,	0x00,	0,	wacom_iv_init },
 { NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL }
@@ -923,6 +1013,10 @@ int main(int argc, char **argv)
 		perror("inputattach");
 		retval = EXIT_FAILURE;
 	}
+
+#ifdef SYSTEMD_SUPPORT
+	sd_notifyf(0, "READY=1\nSTATUS=Processing...\nMAINPID=%lu", (unsigned long) getpid());
+#endif
 
 	errno = 0;
 	do {
