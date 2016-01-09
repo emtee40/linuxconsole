@@ -1,5 +1,6 @@
-joystick (1:1.4.8-3) UNRELEASED; urgency=medium
+joystick (1:1.4.9-1) UNRELEASED; urgency=medium
 
+  * New upstream release.
   * Install Denilson Figueiredo de Sá's blacklist. Closes: #714399.
   * Assume /usr is mounted before the udev rules are invoked, which allows
     the udev helper scripts to be removed and thus
@@ -13,7 +14,7 @@ joystick (1:1.4.8-3) UNRELEASED; urgency=medium
     inputattach.install.
   * Clean up the .install and .manpages catalogs.
 
- -- Stephen Kitt <skitt@debian.org>  Fri, 08 Jan 2016 23:01:29 +0100
+ -- Stephen Kitt <skitt@debian.org>  Sat, 09 Jan 2016 17:17:07 +0100
 
 joystick (1:1.4.8-2) unstable; urgency=medium
 
