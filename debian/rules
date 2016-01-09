@@ -6,8 +6,3 @@
 override_dh_auto_build:
 	dh_auto_build
 	debian/generate_rules.py
-
-override_dh_install:
-	dh_install
-	install -d debian/inputattach/usr/lib/pm-utils/sleep.d
-	install -m755 debian/inputattach.sleep.d debian/inputattach/usr/lib/pm-utils/sleep.d/40inputattach

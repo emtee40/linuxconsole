@@ -9,6 +9,8 @@ joystick (1:1.4.8-3) UNRELEASED; urgency=medium
     upgrades to Squeeze.
   * Drop the workaround for Acrux gamepads, they've been supported by
     the kernel since 2.6.39.
+  * Rename inputattach.sleep.d 40inputattach so it can be installed via
+    inputattach.install.
 
  -- Stephen Kitt <skitt@debian.org>  Fri, 08 Jan 2016 23:01:29 +0100
 
