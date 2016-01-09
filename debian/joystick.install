@@ -9,3 +9,11 @@ usr/bin/jscal-restore
 usr/bin/jscal-store
 usr/bin/jstest
 usr/share/joystick/*
+usr/share/man/man1/ffcfstress.1
+usr/share/man/man1/ffmvforce.1
+usr/share/man/man1/ffset.1
+usr/share/man/man1/fftest.1
+usr/share/man/man1/jscal-restore.1
+usr/share/man/man1/jscal-store.1
+usr/share/man/man1/jscal.1
+usr/share/man/man1/jstest.1
