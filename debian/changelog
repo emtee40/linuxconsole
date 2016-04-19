@@ -1,8 +1,8 @@
-joystick (1:1.5.1-2) UNRELEASED; urgency=medium
+joystick (1:1.5.1-2) unstable; urgency=medium
 
   * Actually install evdev-joystick...
 
- -- Stephen Kitt <skitt@debian.org>  Tue, 19 Apr 2016 23:44:45 +0200
+ -- Stephen Kitt <skitt@debian.org>  Tue, 19 Apr 2016 23:47:43 +0200
 
 joystick (1:1.5.1-1) unstable; urgency=medium
 
