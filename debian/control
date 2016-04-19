@@ -12,14 +12,17 @@ Package: joystick
 Architecture: linux-any
 Depends: ${shlibs:Depends}, ${misc:Depends} 
 Recommends: evtest, inputattach
+Breaks: stella (<< 4.7.2)
+Replaces: stella (<< 4.7.2)
 Description: set of testing and calibration tools for joysticks
  Some useful tools for using joysticks:
-  ffcfstress(1) - force-feedback stress test
-  ffmvforce(1)  - force-feedback orientation test
-  ffset(1)      - force-feedback configuration tool
-  fftest(1)     - general force-feedback test
-  jstest(1)     - joystick test
-  jscal(1)      - joystick calibration tool
+  evdev-joystick(1) - joystick calibration tool
+  ffcfstress(1)     - force-feedback stress test
+  ffmvforce(1)      - force-feedback orientation test
+  ffset(1)          - force-feedback configuration tool
+  fftest(1)         - general force-feedback test
+  jstest(1)         - joystick test
+  jscal(1)          - joystick calibration tool
  .
  evtest and inputattach, which used to be part of this package, are now
  available separately.

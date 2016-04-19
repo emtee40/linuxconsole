@@ -1,5 +1,6 @@
 51-these-are-not-joysticks-rm.rules lib/udev/rules.d/
 lib/udev/js-set-enum-leds
+lib/udev/rules.d/*.rules
 usr/bin/ffcfstress
 usr/bin/ffmvforce
 usr/bin/ffset
