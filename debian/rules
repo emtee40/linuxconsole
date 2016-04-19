@@ -12,3 +12,4 @@ override_dh_auto_build:
 override_dh_auto_install:
 	dh_auto_install
 	chmod 644 debian/tmp/lib/udev/rules.d/*
+	install -m644 docs/evdev-joystick.1 debian/tmp/usr/share/man/man1/

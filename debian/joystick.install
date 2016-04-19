@@ -1,6 +1,7 @@
 51-these-are-not-joysticks-rm.rules lib/udev/rules.d/
 lib/udev/js-set-enum-leds
 lib/udev/rules.d/*.rules
+usr/bin/evdev-joystick
 usr/bin/ffcfstress
 usr/bin/ffmvforce
 usr/bin/ffset
@@ -10,6 +11,7 @@ usr/bin/jscal-restore
 usr/bin/jscal-store
 usr/bin/jstest
 usr/share/joystick/*
+usr/share/man/man1/evdev-joystick.1
 usr/share/man/man1/ffcfstress.1
 usr/share/man/man1/ffmvforce.1
 usr/share/man/man1/ffset.1
