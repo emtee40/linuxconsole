@@ -35,6 +35,9 @@ DEVICES = [
     # Microsoft Corp. Sidewinder X4 keyboard
     ('045e', '0768'),
 
+    # Microsoft Corp. Arc Touch Mouse Transceiver
+    ('045e', '0773'),
+
     # Microsoft® 2.4GHz Transceiver v9.0
     # Microsoft® Nano Transceiver v2.1
     # Microsoft Sculpt Ergonomic Keyboard (5KV-00001)
@@ -47,71 +50,60 @@ DEVICES = [
     # Microsoft® Nano Transceiver v2.0
     ('045e', '0800'),
 
-    # WACOM CTE-640-U V4.0-3
-    # Wacom Co., Ltd Graphire 4 6x8
-    ('056a', '0016'),
+    # List of Wacom devices at: http://linuxwacom.sourceforge.net/wiki/index.php/Device_IDs
+    ('056a', '0010'),  # Wacom ET-0405 Graphire
+    ('056a', '0011'),  # Wacom ET-0405A Graphire2 (4x5)
+    ('056a', '0012'),  # Wacom ET-0507A Graphire2 (5x7)
+    ('056a', '0013'),  # Wacom CTE-430 Graphire3 (4x5)
+    ('056a', '0014'),  # Wacom CTE-630 Graphire3 (6x8)
+    ('056a', '0015'),  # Wacom CTE-440 Graphire4 (4x5)
+    ('056a', '0016'),  # Wacom CTE-640 Graphire4 (6x8)
+    ('056a', '0017'),  # Wacom CTE-450 Bamboo Fun (4x5)
+    ('056a', '0016'),  # Wacom CTE-640 Graphire 4 6x8
+    ('056a', '0017'),  # Wacom CTE-450 Bamboo Fun 4x5
+    ('056a', '0018'),  # Wacom CTE-650 Bamboo Fun 6x8
+    ('056a', '0019'),  # Wacom CTE-631 Bamboo One
+    ('056a', '00d1'),  # Wacom Bamboo Pen and Touch CTH-460
 
-    # Wacom Bamboo Pen and Touch CTH-460
-    ('056a', '00d1'),
+    ('09da', '054f'),  # A4 Tech Co., G7 750 mouse
+    ('09da', '31b5'),  # A4 Tech Co., Ltd Bloody TL80 Terminator Laser Gaming Mouse
+    ('09da', '3997'),  # A4 Tech Co., Ltd Bloody RT7 Terminator Wireless
+    ('09da', '3f8b'),  # A4 Tech Co., Ltd Bloody V8 mouse
+    ('09da', '51f4'),  # Modecom MC-5006 Keyboard
+    ('09da', '5589'),  # A4 Tech Co., Ltd Terminator TL9 Laser Gaming Mouse
+    ('09da', '7b22'),  # A4 Tech Co., Ltd Bloody V5
+    ('09da', '7f2d'),  # A4 Tech Co., Ltd Bloody R3 mouse
+    ('09da', '8090'),  # A4 Tech Co., Ltd X-718BK Oscar Optical Gaming Mouse
+    ('09da', '9066'),  # A4 Tech Co., Sharkoon Fireglider Optical
+    ('09da', '9090'),  # A4 Tech Co., Ltd XL-730K / XL-750BK / XL-755BK Laser Mouse
+    ('09da', '90c0'),  # A4 Tech Co., Ltd X7 G800V keyboard
+    ('09da', 'f32a'),  # A4 Tech Co., Ltd Bloody B540 keyboard
+    ('09da', 'f613'),  # A4 Tech Co., Ltd Bloody V2 mouse
 
-    # A4 Tech Co., G7 750 mouse
-    ('09da', '054f'),
-
-    # A4 Tech Co., Ltd Bloody TL80 Terminator Laser Gaming Mouse
-    ('09da', '31b5'),
-
-    # A4 Tech Co., Ltd Bloody RT7 Terminator Wireless
-    ('09da', '3997'),
-
-    # Modecom MC-5006 Keyboard
-    ('09da', '51f4'),
-
-    # A4 Tech Co., Ltd Terminator TL9 Laser Gaming Mouse
-    ('09da', '5589'),
-
-    # A4 Tech Co., Ltd Bloody V5
-    ('09da', '7b22'),
-
-    # A4 Tech Co., Ltd Bloody R3 mouse
-    ('09da', '7f2d'),
-
-    # A4 Tech Co., Ltd X-718BK Oscar Optical Gaming Mouse
-    ('09da', '8090'),
-
-    # A4 Tech Co., Ltd XL-750BK Laser Mouse
-    ('09da', '9090'),
-
-    # A4 Tech Co., Sharkoon Fireglider Optical
-    ('09da', '9066'),
-
-    # Cooler Master Storm Mizar Mouse
-    ('2516', '001f'),
+    ('2516', '001f'),  # Cooler Master Storm Mizar Mouse
 ]
 
 
 def main():
-    with open('51-these-are-not-joysticks.rules', 'w') as f:
-        f.write(textwrap.dedent('''\
-            # /etc/udev/rules.d/51-these-are-not-joysticks.rules
-            #
-            # This file is auto-generated. For more information:
-            # https://github.com/denilsonsa/udev-joystick-blacklist
+    common_header = textwrap.dedent('''\
+        #
+        # This file is auto-generated. For more information:
+        # https://github.com/denilsonsa/udev-joystick-blacklist
 
-            '''))
+        ''')
+
+    filename = '51-these-are-not-joysticks.rules'
+    with open(filename, 'w') as f:
+        f.write('# /etc/udev/rules.d/' + filename + '\n' + common_header)
         for vendor, product in DEVICES:
-            f.write('SUBSYSTEM=="input", ATTRS{idVendor}=="%s", ATTRS{idProduct}=="%s", ENV{ID_INPUT_JOYSTICK}=="?*", MODE="0000", ENV{ID_INPUT_JOYSTICK}=""\n' % (vendor, product))
+            f.write('SUBSYSTEM=="input", ATTRS{idVendor}=="%s", ATTRS{idProduct}=="%s", ENV{ID_INPUT_JOYSTICK}=="?*", ENV{ID_INPUT_JOYSTICK}=""\n' % (vendor, product))
             f.write('SUBSYSTEM=="input", ATTRS{idVendor}=="%s", ATTRS{idProduct}=="%s", KERNEL=="js[0-9]*", MODE="0000", ENV{ID_INPUT_JOYSTICK}=""\n' % (vendor, product))
 
-    with open('51-these-are-not-joysticks-rm.rules', 'w') as f:
-        f.write(textwrap.dedent('''\
-            # /etc/udev/rules.d/51-these-are-not-joysticks-rm.rules
-            #
-            # This file is auto-generated. For more information:
-            # https://github.com/denilsonsa/udev-joystick-blacklist
-
-            '''))
+    filename = '51-these-are-not-joysticks-rm.rules'
+    with open(filename, 'w') as f:
+        f.write('# /etc/udev/rules.d/' + filename + '\n' + common_header)
         for vendor, product in DEVICES:
-            f.write('SUBSYSTEM=="input", ATTRS{idVendor}=="%s", ATTRS{idProduct}=="%s", ENV{ID_INPUT_JOYSTICK}=="?*", RUN+="/bin/rm %%E{DEVNAME}", ENV{ID_INPUT_JOYSTICK}=""\n' % (vendor, product))
+            f.write('SUBSYSTEM=="input", ATTRS{idVendor}=="%s", ATTRS{idProduct}=="%s", ENV{ID_INPUT_JOYSTICK}=="?*", ENV{ID_INPUT_JOYSTICK}=""\n' % (vendor, product))
             f.write('SUBSYSTEM=="input", ATTRS{idVendor}=="%s", ATTRS{idProduct}=="%s", KERNEL=="js[0-9]*", RUN+="/bin/rm %%E{DEVNAME}", ENV{ID_INPUT_JOYSTICK}=""\n' % (vendor, product))
 
 
