@@ -1,10 +1,10 @@
-joystick (1:1.6.0-1) UNRELEASED; urgency=medium
+joystick (1:1.6.0-1) unstable; urgency=medium
 
   * New upstream release.
   * Update Denilson Figueiredo de Sá's blacklist; this fixes issues with
     Microsoft keyboards. Closes: #825686.
 
- -- Stephen Kitt <skitt@debian.org>  Fri, 12 Aug 2016 16:16:07 +0200
+ -- Stephen Kitt <skitt@debian.org>  Sat, 08 Oct 2016 13:19:25 +0200
 
 joystick (1:1.5.1-2) unstable; urgency=medium
 
