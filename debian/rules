@@ -7,4 +7,5 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 
 override_dh_auto_build:
 	dh_auto_build -- SYSTEMD_SUPPORT=1
+	mkdir -p after_kernel_4_9
 	debian/generate_rules.py

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os.path
 import textwrap
 
 # List of tuples ('idVendor', 'idProduct'), as four hexadecimal digits.
@@ -66,6 +67,7 @@ DEVICES = [
     ('056a', '00d1'),  # Wacom Bamboo Pen and Touch CTH-460
 
     ('09da', '054f'),  # A4 Tech Co., G7 750 mouse
+    ('09da', '3043'),  # A4 Tech Co., Ltd Bloody R8A Gaming Mouse
     ('09da', '31b5'),  # A4 Tech Co., Ltd Bloody TL80 Terminator Laser Gaming Mouse
     ('09da', '3997'),  # A4 Tech Co., Ltd Bloody RT7 Terminator Wireless
     ('09da', '3f8b'),  # A4 Tech Co., Ltd Bloody V8 mouse
@@ -77,12 +79,38 @@ DEVICES = [
     ('09da', '9066'),  # A4 Tech Co., Sharkoon Fireglider Optical
     ('09da', '9090'),  # A4 Tech Co., Ltd XL-730K / XL-750BK / XL-755BK Laser Mouse
     ('09da', '90c0'),  # A4 Tech Co., Ltd X7 G800V keyboard
+    ('09da', 'f012'),  # A4 Tech Co., Ltd Bloody V7 mouse
     ('09da', 'f32a'),  # A4 Tech Co., Ltd Bloody B540 keyboard
     ('09da', 'f613'),  # A4 Tech Co., Ltd Bloody V2 mouse
+    ('09da', 'f624'),  # A4 Tech Co., Ltd Bloody B120 Keyboard
+
+    ('1d57', 'ad03'),  # [T3] 2.4GHz and IR Air Mouse Remote Control
+
+    ('1e7d', '2e4a'),  # Roccat Tyon Mouse
+
+    ('20a0', '422d'),  # Winkeyless.kr Keyboards
 
     ('2516', '001f'),  # Cooler Master Storm Mizar Mouse
     ('2516', '0028'),  # Cooler Master Storm Alcor Mouse
 ]
+
+
+def write_mode_0000_udev_rule_file(path, devices, message):
+    filename = os.path.basename(path)
+    with open(path, 'w') as f:
+        f.write('# /etc/udev/rules.d/' + filename + '\n' + message + '\n')
+        for vendor, product in devices:
+            f.write('SUBSYSTEM=="input", ATTRS{idVendor}=="%s", ATTRS{idProduct}=="%s", ENV{ID_INPUT_JOYSTICK}=="?*", ENV{ID_INPUT_JOYSTICK}=""\n' % (vendor, product))
+            f.write('SUBSYSTEM=="input", ATTRS{idVendor}=="%s", ATTRS{idProduct}=="%s", KERNEL=="js[0-9]*", MODE="0000", ENV{ID_INPUT_JOYSTICK}=""\n' % (vendor, product))
+
+
+def write_rm_udev_rule_file(path, devices, message):
+    filename = os.path.basename(path)
+    with open(path, 'w') as f:
+        f.write('# /etc/udev/rules.d/' + filename + '\n' + message + '\n')
+        for vendor, product in devices:
+            f.write('SUBSYSTEM=="input", ATTRS{idVendor}=="%s", ATTRS{idProduct}=="%s", ENV{ID_INPUT_JOYSTICK}=="?*", ENV{ID_INPUT_JOYSTICK}=""\n' % (vendor, product))
+            f.write('SUBSYSTEM=="input", ATTRS{idVendor}=="%s", ATTRS{idProduct}=="%s", KERNEL=="js[0-9]*", RUN+="/bin/rm %%E{DEVNAME}", ENV{ID_INPUT_JOYSTICK}=""\n' % (vendor, product))
 
 
 def main():
@@ -90,22 +118,15 @@ def main():
         #
         # This file is auto-generated. For more information:
         # https://github.com/denilsonsa/udev-joystick-blacklist
-
         ''')
 
-    filename = '51-these-are-not-joysticks.rules'
-    with open(filename, 'w') as f:
-        f.write('# /etc/udev/rules.d/' + filename + '\n' + common_header)
-        for vendor, product in DEVICES:
-            f.write('SUBSYSTEM=="input", ATTRS{idVendor}=="%s", ATTRS{idProduct}=="%s", ENV{ID_INPUT_JOYSTICK}=="?*", ENV{ID_INPUT_JOYSTICK}=""\n' % (vendor, product))
-            f.write('SUBSYSTEM=="input", ATTRS{idVendor}=="%s", ATTRS{idProduct}=="%s", KERNEL=="js[0-9]*", MODE="0000", ENV{ID_INPUT_JOYSTICK}=""\n' % (vendor, product))
+    write_mode_0000_udev_rule_file('51-these-are-not-joysticks.rules', DEVICES, common_header)
+    write_rm_udev_rule_file('51-these-are-not-joysticks-rm.rules', DEVICES, common_header)
 
-    filename = '51-these-are-not-joysticks-rm.rules'
-    with open(filename, 'w') as f:
-        f.write('# /etc/udev/rules.d/' + filename + '\n' + common_header)
-        for vendor, product in DEVICES:
-            f.write('SUBSYSTEM=="input", ATTRS{idVendor}=="%s", ATTRS{idProduct}=="%s", ENV{ID_INPUT_JOYSTICK}=="?*", ENV{ID_INPUT_JOYSTICK}=""\n' % (vendor, product))
-            f.write('SUBSYSTEM=="input", ATTRS{idVendor}=="%s", ATTRS{idProduct}=="%s", KERNEL=="js[0-9]*", RUN+="/bin/rm %%E{DEVNAME}", ENV{ID_INPUT_JOYSTICK}=""\n' % (vendor, product))
+    # See: https://github.com/denilsonsa/udev-joystick-blacklist/issues/20
+    devices_except_microsoft = [dev for dev in DEVICES if dev[0] != '045e']
+    write_mode_0000_udev_rule_file('after_kernel_4_9/51-these-are-not-joysticks.rules', devices_except_microsoft, common_header)
+    write_rm_udev_rule_file('after_kernel_4_9/51-these-are-not-joysticks-rm.rules', devices_except_microsoft, common_header)
 
 
 if __name__ == '__main__':

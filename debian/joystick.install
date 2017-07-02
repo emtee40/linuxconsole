@@ -1,4 +1,4 @@
-51-these-are-not-joysticks-rm.rules lib/udev/rules.d/
+after_kernel_4_9/51-these-are-not-joysticks-rm.rules lib/udev/rules.d/
 lib/udev/js-set-enum-leds
 lib/udev/rules.d/*.rules
 usr/bin/evdev-joystick
