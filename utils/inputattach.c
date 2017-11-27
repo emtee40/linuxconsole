@@ -736,6 +736,52 @@ static int egalax_init(int fd,
 
 # endif /* SERIO_EGALAX */
 
+#define MTOUCH_CMD1 "\001OI\r"
+#define MTOUCH_CMD2 "\001UT\r"
+
+static int mtouch_read_response(int fd, unsigned char *c, int timeout) {
+	unsigned char *tmp = c;
+	int end = 0;
+
+	while (!end && !readchar(fd, tmp, timeout)) {
+		if (*tmp == '\n' || *tmp == '\r')
+			*tmp = '\0', end = 1;
+		tmp++;
+	}
+
+	return tmp - c;
+}
+
+static int mtouch_init(int fd, unsigned long *id, unsigned long *extra) {
+	unsigned char response[128];
+
+	if (write(fd, MTOUCH_CMD1, sizeof(MTOUCH_CMD1) - 1) != sizeof(MTOUCH_CMD1) - 1)
+		return -1;
+	tcdrain(fd);
+
+	if (!mtouch_read_response(fd, response, 200))
+		return -1;
+
+#if 0
+	if (response[0] == 1)
+		printf("MicroTouch Controller ID: %s\n", &response[1]);
+#endif
+
+	if (write(fd, MTOUCH_CMD2, sizeof(MTOUCH_CMD2) - 1) != sizeof(MTOUCH_CMD2) - 1)
+		return -1;
+	tcdrain(fd);
+
+	if (!mtouch_read_response(fd, response, 200))
+		return -1;
+
+#if 0
+	if (response[0] == 1)
+		printf("MicroTouch Unit Type and Status: %s\n", &response[1]);
+#endif
+
+	return 0;
+}
+
 struct input_types {
 	const char *name;
 	const char *name2;
@@ -843,7 +889,7 @@ static struct input_types input_types[] = {
 	SERIO_HAMPSHIRE,	0x00,   0x00,   0,  NULL },
 { "--mtouch",		"-mtouch",	"MicroTouch (3M) touchscreen",
 	B9600, CS8 | CRTSCTS,
-	SERIO_MICROTOUCH,	0x00,	0x00,	0,	NULL },
+	SERIO_MICROTOUCH,	0x00,	0x00,	0,	mtouch_init },
 #ifdef SERIO_TSC40
 { "--tsc",		"-tsc",		"TSC-10/25/40 serial touchscreen",
 	B9600, CS8,
@@ -910,7 +956,7 @@ static void show_help(void)
 	struct input_types *type;
 
 	puts("");
-	puts("Usage: inputattach [--daemon] [--baud <baud>] [--always] [--noinit] <mode> <device>");
+	puts("Usage: inputattach [--daemon] [--baud <baud>] [--[no-]crtscts] [--always] [--noinit] <mode> <device>");
 	puts("");
 	puts("Modes:");
 
@@ -938,8 +984,10 @@ int main(int argc, char **argv)
 	unsigned char c;
 	int retval;
 	int baud = -1;
+	int crtscts = -1;
 	int ignore_init_res = 0;
 	int no_init = 0;
+	int flags;
 
 	for (i = 1; i < argc; i++) {
 		if (!strcasecmp(argv[i], "--help")) {
@@ -951,6 +999,22 @@ int main(int argc, char **argv)
 			ignore_init_res = 1;
 		} else if (!strcasecmp(argv[i], "--noinit")) {
 			no_init = 1;
+		} else if (!strcasecmp(argv[i], "--crtscts")) {
+			if (crtscts != -1) {
+				fprintf(stderr,
+						"inputattach: duplicate or conflicting "
+						"--crtscts / --no-crtscts options\n");
+				return EXIT_FAILURE;
+			}
+			crtscts = 1;
+		} else if (!strcasecmp(argv[i], "--no-crtscts")) {
+			if (crtscts != -1) {
+				fprintf(stderr,
+						"inputattach: duplicate or conflicting "
+						"--crtscts / --no-crtscts options\n");
+				return EXIT_FAILURE;
+			}
+			crtscts = 0;
 		} else if (need_device) {
 			device = argv[i];
 			need_device = 0;
@@ -1016,7 +1080,16 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	setline(fd, type->flags, type->speed);
+	flags = type->flags;
+	switch (crtscts) {
+	case 0:
+		flags &= ~CRTSCTS;
+		break;
+	case 1:
+		flags |= CRTSCTS;
+		break;
+	}
+	setline(fd, flags, type->speed);
 
 	if (type->flush)
 		while (!readchar(fd, &c, 100))
