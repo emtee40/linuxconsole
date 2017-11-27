@@ -782,6 +782,25 @@ static int mtouch_init(int fd, unsigned long *id, unsigned long *extra) {
 	return 0;
 }
 
+static int elo_init(int fd, unsigned long *id, unsigned long *extra) {
+	unsigned char cmd[10] = { 'U', 'i', 0, 0, 0, 0, 0, 0, 0, 0 };
+	unsigned char resp[20];
+	unsigned char *tmp;
+
+	if (write(fd, cmd, 10) != 10)
+		return -1;
+	tcdrain(fd);
+
+	for (tmp = resp; tmp - resp < 20; tmp++)
+		if (readchar(fd, tmp, 100))
+			break;
+
+	if ((tmp - resp) == 20 && resp[0] == 'U' && resp[1] == 'I')
+		return 0;
+
+	return -1;
+}
+
 struct input_types {
 	const char *name;
 	const char *name2;
@@ -874,7 +893,7 @@ static struct input_types input_types[] = {
 #endif
 { "--elotouch",		"-elo",		"ELO touchscreen, 10-byte mode",
 	B9600, CS8,
-	SERIO_ELO,		0x00,	0x00,	0,	NULL },
+	SERIO_ELO,		0x00,	0x00,	0,	elo_init },
 { "--elo4002",		"-elo6b",	"ELO touchscreen, 6-byte mode",
 	B9600, CS8 | CRTSCTS,
 	SERIO_ELO,		0x01,	0x00,	0,	NULL },
