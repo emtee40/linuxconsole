@@ -975,7 +975,12 @@ static void show_help(void)
 	struct input_types *type;
 
 	puts("");
-	puts("Usage: inputattach [--daemon] [--baud <baud>] [--[no-]crtscts] [--always] [--noinit] <mode> <device>");
+	puts("Usage: inputattach [--daemon] [--baud <baud>] [--[no-]crtscts] [--always] [--noinit] <mode> <device> [...]");
+	puts("Multiple mode / device pairs can be specified if the touchscreens");
+	puts("can be probed properly.");
+	puts("");
+	puts("Options --baud <baud>, --[no-]crtscts, --always and --noinit can appear");
+	puts("before <mode> or between <mode> and <device>.");
 	puts("");
 	puts("Modes:");
 
@@ -989,55 +994,76 @@ static void show_help(void)
 /* palmed wisdom from http://stackoverflow.com/questions/1674162/ */
 #define RETRY_ERROR(x) (x == EAGAIN || x == EWOULDBLOCK || x == EINTR)
 
+#define MAX_DEVS (4)
+
 int main(int argc, char **argv)
 {
 	unsigned long devt;
 	int ldisc;
-	struct input_types *type = NULL;
-	const char *device = NULL;
+	int ndevs = 0;
+	struct input_types *type[MAX_DEVS] = { NULL, NULL, NULL, NULL };
+	const char *device[MAX_DEVS] = { NULL, NULL, NULL, NULL };
 	int daemon_mode = 0;
 	int need_device = 0;
 	unsigned long id, extra;
 	int fd;
-	int i;
+	int i, j;
 	unsigned char c;
 	int retval;
-	int baud = -1;
-	int crtscts = -1;
-	int ignore_init_res = 0;
-	int no_init = 0;
-	int flags;
+	int baud[MAX_DEVS] = { -1, -1, -1, -1 };
+	int crtscts[MAX_DEVS] = { -1, -1, -1, -1 };
+	int ignore_init_res[MAX_DEVS] = { 0, 0, 0, 0 };
+	int no_init[MAX_DEVS] = { 0, 0, 0, 0 };
 
 	for (i = 1; i < argc; i++) {
+		int argidx = ndevs - need_device;
+
 		if (!strcasecmp(argv[i], "--help")) {
 			show_help();
 			return EXIT_SUCCESS;
 		} else if (!strcasecmp(argv[i], "--daemon")) {
 			daemon_mode = 1;
 		} else if (!strcasecmp(argv[i], "--always")) {
-			ignore_init_res = 1;
+			if (argidx >= MAX_DEVS) {
+				fprintf(stderr, "inputattach: Too many options!\n");
+				return EXIT_FAILURE;
+			}
+			ignore_init_res[argidx] = 1;
 		} else if (!strcasecmp(argv[i], "--noinit")) {
-			no_init = 1;
+			if (argidx >= MAX_DEVS) {
+				fprintf(stderr, "inputattach: Too many options!\n");
+				return EXIT_FAILURE;
+			}
+			no_init[argidx] = 1;
 		} else if (!strcasecmp(argv[i], "--crtscts")) {
-			if (crtscts != -1) {
+			if (argidx >= MAX_DEVS) {
+				fprintf(stderr, "inputattach: Too many options!\n");
+				return EXIT_FAILURE;
+			}
+			if (crtscts[argidx] != -1) {
 				fprintf(stderr,
 						"inputattach: duplicate or conflicting "
 						"--crtscts / --no-crtscts options\n");
 				return EXIT_FAILURE;
 			}
-			crtscts = 1;
+			crtscts[ndevs - need_device] = 1;
 		} else if (!strcasecmp(argv[i], "--no-crtscts")) {
-			if (crtscts != -1) {
+			if (argidx >= MAX_DEVS) {
+				fprintf(stderr, "inputattach: Too many options!\n");
+				return EXIT_FAILURE;
+			}
+			if (crtscts[argidx] != -1) {
 				fprintf(stderr,
 						"inputattach: duplicate or conflicting "
 						"--crtscts / --no-crtscts options\n");
 				return EXIT_FAILURE;
 			}
-			crtscts = 0;
-		} else if (need_device) {
-			device = argv[i];
-			need_device = 0;
+			crtscts[argidx] = 0;
 		} else if (!strcasecmp(argv[i], "--baud")) {
+			if (argidx >= MAX_DEVS) {
+				fprintf(stderr, "inputattach: Too many options!\n");
+				return EXIT_FAILURE;
+			}
 			if (argc <= i + 1) {
 				show_help();
 				fprintf(stderr,
@@ -1045,87 +1071,132 @@ int main(int argc, char **argv)
 				return EXIT_FAILURE;
 			}
 
-			baud = atoi(argv[++i]);
-		} else {
-			if (type && type->name) {
-				fprintf(stderr,
-					"inputattach: '%s' - "
-					"only one mode allowed\n", argv[i]);
+			baud[argidx] = atoi(argv[++i]);
+		} else if (need_device) {
+			if (argidx >= MAX_DEVS) {
+				fprintf(stderr, "inputattach: Too many options!\n");
 				return EXIT_FAILURE;
 			}
-			for (type = input_types; type->name; type++) {
-				if (!strcasecmp(argv[i], type->name) ||
-				    !strcasecmp(argv[i], type->name2)) {
+			device[argidx] = argv[i];
+			need_device = 0;
+		} else {
+			struct input_types *tmp;
+
+			if (ndevs >= MAX_DEVS) {
+				fprintf(stderr,
+					"inputattach: '%s' - "
+					"only %d modes allowed\n", argv[i], MAX_DEVS);
+				return EXIT_FAILURE;
+			}
+			for (tmp = input_types; tmp->name; tmp++) {
+				if (!strcasecmp(argv[i], tmp->name) ||
+				    !strcasecmp(argv[i], tmp->name2)) {
 					break;
 				}
 			}
-			if (!type->name) {
+			if (!tmp->name) {
 				fprintf(stderr,
 					"inputattach: invalid mode '%s'\n",
 					argv[i]);
 				return EXIT_FAILURE;
 			}
+			for (j = 0; j < ndevs; j++) {
+				if (type[j] == tmp) {
+					fprintf(stderr,
+						"inputattach: mode '%s' listed twice\n", argv[i]);
+					return EXIT_FAILURE;
+				}
+			}
+			if (ndevs) {
+				if (type[ndevs - 1]->init == NULL) {
+					printf(
+						"inputattach: mode %s cannot be used as "
+						"the previous mode (%s) does not have "
+						"an init function\n",
+						argv[i], type[ndevs - 1]->name);
+					break;
+				} else if (ignore_init_res[ndevs - 1]) {
+					printf(
+						"inputattach: mode %s cannot be used as "
+						"--always is set for the previous mode\n",
+						argv[i]);
+					break;
+				}
+			}
 			need_device = 1;
+			type[ndevs++] = tmp;
 		}
 	}
 
-	if (!type || !type->name) {
+	if (!ndevs) {
 		fprintf(stderr, "inputattach: must specify mode\n");
 		return EXIT_FAILURE;
-        }
+	}
 
 	if (need_device) {
-		fprintf(stderr, "inputattach: must specify device\n");
+		fprintf(stderr,
+				"inputattach: must specify device for mode %s\n",
+				type[ndevs - 1]->name);
 		return EXIT_FAILURE;
 	}
 
-	fd = open(device, O_RDWR | O_NOCTTY | O_NONBLOCK);
-	if (fd < 0) {
-		fprintf(stderr, "inputattach: '%s' - %s\n",
-			device, strerror(errno));
-		return 1;
-	}
+	for (i = 0; i < ndevs; i++) {
+		int flags;
 
-	switch(baud) {
-	case -1: break;
-	case 2400: type->speed = B2400; break;
-	case 4800: type->speed = B4800; break;
-	case 9600: type->speed = B9600; break;
-	case 19200: type->speed = B19200; break;
-	case 38400: type->speed = B38400; break;
-	default:
-		fprintf(stderr, "inputattach: invalid baud rate '%d'\n",
-				baud);
-		return EXIT_FAILURE;
-	}
+		fd = open(device[i], O_RDWR | O_NOCTTY | O_NONBLOCK);
+		if (fd < 0) {
+			fprintf(stderr, "inputattach: '%s' - %s\n",
+				device[i], strerror(errno));
+			return 1;
+		}
 
-	flags = type->flags;
-	switch (crtscts) {
-	case 0:
-		flags &= ~CRTSCTS;
-		break;
-	case 1:
-		flags |= CRTSCTS;
-		break;
-	}
-	setline(fd, flags, type->speed);
+		switch(baud[i]) {
+		case -1: break;
+		case 2400: type[i]->speed = B2400; break;
+		case 4800: type[i]->speed = B4800; break;
+		case 9600: type[i]->speed = B9600; break;
+		case 19200: type[i]->speed = B19200; break;
+		case 38400: type[i]->speed = B38400; break;
+		default:
+			fprintf(stderr, "inputattach: invalid baud rate '%d'\n",
+					baud[i]);
+			return EXIT_FAILURE;
+		}
 
-	if (type->flush)
-		while (!readchar(fd, &c, 100))
-			/* empty */;
+		flags = type[i]->flags;
+		switch (crtscts[i]) {
+		case 0:
+			flags &= ~CRTSCTS;
+			break;
+		case 1:
+			flags |= CRTSCTS;
+			break;
+		}
+		setline(fd, flags, type[i]->speed);
 
-	id = type->id;
-	extra = type->extra;
+		if (type[i]->flush)
+			while (!readchar(fd, &c, 100))
+				/* empty */;
 
-	if (type->init && !no_init) {
-		if (type->init(fd, &id, &extra)) {
-			if (ignore_init_res) {
-				fprintf(stderr, "inputattach: ignored device initialization failure\n");
-			} else {
-				fprintf(stderr, "inputattach: device initialization failed\n");
-				return EXIT_FAILURE;
+		id = type[i]->id;
+		extra = type[i]->extra;
+
+		if (type[i]->init && !no_init[i]) {
+			if (type[i]->init(fd, &id, &extra)) {
+				if (ignore_init_res[i]) {
+					fprintf(stderr, "inputattach: ignored device initialization failure\n");
+				} else {
+					if (i == ndevs - 1) {
+						fprintf(stderr, "inputattach: device initialization failed\n");
+						return EXIT_FAILURE;
+					} else {
+						close(fd);
+						continue;
+					}
+				}
 			}
 		}
+		break;
 	}
 
 	ldisc = N_MOUSE;
@@ -1134,7 +1205,7 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	devt = type->type | (id << 8) | (extra << 16);
+	devt = type[i]->type | (id << 8) | (extra << 16);
 
 	if (ioctl(fd, SPIOCSTYPE, &devt) < 0) {
 		fprintf(stderr, "inputattach: can't set device type\n");
