@@ -3,7 +3,7 @@
     https://github.com/VDrift/vdrift/tree/master/tools/G25manage
 
   This code is released under the GPLv2, and modified from the
-  original by Stephen Anthony (stephena@users.sf.net).
+  original by Stephen Anthony (sa666666@gmail.com).
 */
 
 #include <stdio.h>
@@ -27,8 +27,8 @@
 #include <linux/input.h>
 
 /* this macro is used to tell if "bit" is set in "array"
- * it selects a byte from the array, and does a boolean AND 
- * operation with a byte that only has the relevant bit set. 
+ * it selects a byte from the array, and does a boolean AND
+ * operation with a byte that only has the relevant bit set.
  * eg. to check for the 12th bit, we do (array[1] & 1<<4)
  */
 #define test_bit(bit, array)    (array[bit/8] & (1<<(bit%8)))
@@ -36,8 +36,20 @@
 // The default location for evdev devices in Linux
 #define EVDEV_DIR "/dev/input/by-id/"
 
+////////////////////////////////////////////////////////////////
+// Function signatures; see actual functions for documentation
+void help(void);
+void listDevices(void);
+void printAxisType(int i);
+int showCalibration(const char* const evdev);
+int setAxisInfo(const char* evdev, int axisindex,
+                __s32 minvalue, __s32 maxvalue,
+                __s32 deadzonevalue, __s32 fuzzvalue);
+////////////////////////////////////////////////////////////////
+
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-void help()
+void help(void)
 {
   printf("%s","Usage:\n\n"
     "  --help, --h              The message you're now reading\n"
@@ -78,7 +90,7 @@ void help()
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-void listDevices()
+void listDevices(void)
 {
   DIR* dirp = opendir(EVDEV_DIR);
   struct dirent* dp;
@@ -87,14 +99,14 @@ void listDevices()
     return;
 
   // Loop over dir entries using readdir
-  int len = strlen("event-joystick");
+  size_t len = strlen("event-joystick");
   while((dp = readdir(dirp)) != NULL)
   {
     // Only select names that end in 'event-joystick'
-    int devlen = strlen(dp->d_name);
+    size_t devlen = strlen(dp->d_name);
     if(devlen >= len)
     {
-      const char* start = dp->d_name + devlen - len;
+      const char* const start = dp->d_name + devlen - len;
       if(strncmp(start, "event-joystick", len) == 0)
         printf("%s%s\n", EVDEV_DIR, dp->d_name);
     }
@@ -135,11 +147,11 @@ void printAxisType(int i)
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-int showCalibration(const char* evdev)
+int showCalibration(const char* const evdev)
 {
   int fd = -1, axisindex;
   uint8_t abs_bitmask[ABS_MAX/8 + 1];
-  float percent_deadzone;
+  double percent_deadzone;
   struct input_absinfo abs_features;
 
   if((fd = open(evdev, O_RDONLY)) < 0)
@@ -165,7 +177,7 @@ int showCalibration(const char* evdev)
       if(ioctl(fd, EVIOCGABS(axisindex), &abs_features))
         perror("evdev EVIOCGABS ioctl");
 
-      percent_deadzone = (float)abs_features.flat * 100 / (float)abs_features.maximum;
+      percent_deadzone = (double)abs_features.flat * 100 / (double)abs_features.maximum;
       printf("(value: %d, min: %d, max: %d, flatness: %d (=%.2f%%), fuzz: %d)\n",
         abs_features.value, abs_features.minimum, abs_features.maximum,
         abs_features.flat, percent_deadzone, abs_features.fuzz);
@@ -178,12 +190,12 @@ int showCalibration(const char* evdev)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 int setAxisInfo(const char* evdev, int axisindex,
-                       __s32 minvalue, __s32 maxvalue,
-                       __s32 deadzonevalue, __s32 fuzzvalue)
+                __s32 minvalue, __s32 maxvalue,
+                __s32 deadzonevalue, __s32 fuzzvalue)
 {
   int fd = -1;
   uint8_t abs_bitmask[ABS_MAX/8 + 1];
-  float percent_deadzone;
+  double percent_deadzone;
   struct input_absinfo abs_features;
 
   if ((fd = open(evdev, O_RDONLY)) < 0)
@@ -267,7 +279,7 @@ int setAxisInfo(const char* evdev, int axisindex,
         perror("evdev EVIOCGABS ioctl");
         return 1;
       }
-      percent_deadzone = (float)abs_features.flat * 100 / (float)abs_features.maximum;
+      percent_deadzone = (double)abs_features.flat * 100 / (double)abs_features.maximum;
       printf("    (value: %d, min: %d, max: %d, flatness: %d (=%.2f%%), fuzz: %d)\n",
         abs_features.value, abs_features.minimum, abs_features.maximum,
         abs_features.flat, percent_deadzone, abs_features.fuzz);
