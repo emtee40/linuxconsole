@@ -1010,6 +1010,7 @@ int main(int argc, char **argv)
 	case 9600: type->speed = B9600; break;
 	case 19200: type->speed = B19200; break;
 	case 38400: type->speed = B38400; break;
+	case 115200: type->speed = B115200; break;
 	default:
 		fprintf(stderr, "inputattach: invalid baud rate '%d'\n",
 				baud);
