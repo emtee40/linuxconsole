@@ -43,8 +43,11 @@
 #define max(a,b)	((a)>(b)?(a):(b))
 
 /* File descriptor of the force feedback /dev entry */
-static int ff_fd;
+static int ff_fd = -1;
 static struct ff_effect effect;
+
+static SDL_Window* window = NULL;
+static SDL_Renderer* renderer = NULL;
 
 static void welcome()
 {
@@ -112,18 +115,29 @@ printf("level: %04x direction: %04x\n", (unsigned int)effect.u.constant.level, (
 	first = 0;
 }
 
+static void shutdown()
+{
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+
+	SDL_Quit();
+	if (ff_fd >= 0) {
+		close(ff_fd);
+	}
+}
+
 int main(int argc, char** argv)
 {
-	SDL_Surface* screen;
 	const char * dev_name = "/dev/input/event0";
-	int i;
-	Uint32 ticks, period = 200;
+	Uint32 ticks, timeout, period = 200;
+	Sint32 x = WIN_W / 2, y = WIN_H / 2;
+	Uint32 state = 0;
 
 	welcome();
 	if (argc <= 1) return 0;
 
 	/* Parse parameters */
-	for (i=1; i<argc; ++i) {
+	for (int i = 1; i < argc; ++i) {
 		if (strcmp(argv[i], "--help") == 0) {
 			printf("Usage: %s /dev/input/eventXX [-u update frequency in HZ]\n", argv[0]);
 			printf("Generates constant force effects depending on the position of the mouse\n");
@@ -142,14 +156,21 @@ int main(int argc, char** argv)
 	}
 
 	/* Initialize SDL */
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) < 0) {
 		fprintf(stderr, "Could not initialize SDL: %s\n", SDL_GetError());
 		exit(1);
 	}
-	atexit(SDL_Quit);
-	screen = SDL_SetVideoMode(WIN_W, WIN_H, 0, SDL_SWSURFACE);
-	if (screen == NULL) {
-		fprintf(stderr, "Could not set video mode: %s\n", SDL_GetError());
+	atexit(&shutdown);
+
+	window = SDL_CreateWindow("ffmvforce", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIN_W, WIN_H, 0);
+	if (!window) {
+		fprintf(stderr, "Could not create window: %s\n", SDL_GetError());
+		exit(1);
+	}
+
+	renderer = SDL_CreateRenderer(window, -1, 0);
+	if (!renderer) {
+		fprintf(stderr, "Could not create renderer: %s\n", SDL_GetError());
 		exit(1);
 	}
 		
@@ -161,25 +182,58 @@ int main(int argc, char** argv)
 	}
 
 	ticks = SDL_GetTicks();
+	timeout = ticks + period;
+
 	/* Main loop */
 	for (;;) {
 		SDL_Event event;
-		SDL_WaitEvent(&event);
 
-		switch (event.type) {
-		case SDL_QUIT:
-			exit(0);
-			break;
+                if (state) {
+                        SDL_WaitEventTimeout(&event, period);
+                } else {
+                        SDL_WaitEvent(&event);
+                }
 
-		case SDL_MOUSEMOTION:
-			if (event.motion.state && SDL_GetTicks()-ticks > period) {
-				ticks = SDL_GetTicks();
-				generate_force(event.motion.x, event.motion.y);
+                do {
+			if (event.type == SDL_QUIT) {
+				exit(0);
+
+			} else if (event.type == SDL_KEYDOWN) {
+				switch(event.key.keysym.sym) {
+				case SDLK_ESCAPE:
+				case SDLK_q:
+					exit(0);
+				default:
+					break;
+				}
+
+			} else if (event.type == SDL_MOUSEBUTTONDOWN) {
+				state = event.button.state;
+				x = event.button.x;
+				y = event.button.y;
+
+			} else if (event.type == SDL_MOUSEMOTION && event.motion.state) {
+				state = event.motion.state;
+				x = event.motion.x;
+				y = event.motion.y;
 			}
-			
-			break;
+		} while(SDL_PollEvent(&event));
+
+		ticks = SDL_GetTicks();
+		if (state && SDL_TICKS_PASSED(ticks, timeout)) {
+			timeout = ticks + period;
+			generate_force(x, y);
+			state = 0;
 		}
+
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+		SDL_RenderClear(renderer);
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+		SDL_RenderDrawLine(renderer, 0, WIN_H / 2, WIN_W, WIN_H / 2);
+		SDL_RenderDrawLine(renderer, WIN_W / 2, 0, WIN_W / 2, WIN_H);
+		SDL_RenderDrawLine(renderer, WIN_W / 2, WIN_H / 2, x, y);
+		SDL_RenderPresent(renderer);
 	}
 
-	return 0;
+	exit(0);
 }

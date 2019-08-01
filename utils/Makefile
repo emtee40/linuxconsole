@@ -51,10 +51,10 @@ ffcfstress: ffcfstress.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) -funsigned-char $^ $(LDFLAGS) -lm -o $@
 
 ffmvforce.o: ffmvforce.c
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $^ -o $@ `sdl-config --cflags`
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $^ -o $@ `sdl2-config --cflags`
 
 ffmvforce: ffmvforce.o
-	$(CC) $^ -o $@ $(LDFLAGS) -g -lm `sdl-config --libs`
+	$(CC) $^ -o $@ $(LDFLAGS) -g -lm `sdl2-config --libs`
 
 axbtnmap.o: axbtnmap.c axbtnmap.h
 
