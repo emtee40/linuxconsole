@@ -902,6 +902,9 @@ static struct input_types input_types[] = {
 { "--rainshadow-cec",		"-rainshadow-cec",	"RainShadow Tech HDMI CEC dongle",
 	B9600, CS8,
 	SERIO_RAINSHADOW_CEC,		0x00,	0x00,	0,	NULL },
+{ "--fsia6b",		"-fsia6b",	"FS-iA6B RC Receiver",
+	B115200, CS8,
+	SERIO_FSIA6B,		0x00,	0x00,	0,	NULL },
 { NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL }
 };
 

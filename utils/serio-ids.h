@@ -137,5 +137,8 @@
 #ifndef SERIO_RAINSHADOW_CEC
 # define SERIO_RAINSHADOW_CEC	0x41
 #endif
+#ifndef SERIO_FSIA6B
+# define SERIO_FSIA6B		0x42
+#endif
 
 #endif
