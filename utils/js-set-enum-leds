@@ -74,62 +74,41 @@ case $DEVICETYPE in
 	FOUR)
 		# see sixaxis_set_leds_from_id()
 		# in linux/drivers/hid/hid-sony.c
-		case `expr $JSNUM % 10 | bc` in
-			0) set_gamepad_leds 1 0 0 0;
-			;;
-			1) set_gamepad_leds 0 1 0 0;
-			;;
-			2) set_gamepad_leds 0 0 1 0;
-			;;
-			3) set_gamepad_leds 0 0 0 1;
-			;;
-			4) set_gamepad_leds 1 0 0 1;
-			;;
-			5) set_gamepad_leds 0 1 0 1;
-			;;
-			6) set_gamepad_leds 0 0 1 1;
-			;;
-			7) set_gamepad_leds 1 0 1 1;
-			;;
-			8) set_gamepad_leds 0 1 1 1;
-			;;
-			9) set_gamepad_leds 1 1 1 1;
-			;;
+		case $((JSNUM % 10)) in
+			0) set_gamepad_leds 1 0 0 0;;
+			1) set_gamepad_leds 0 1 0 0;;
+			2) set_gamepad_leds 0 0 1 0;;
+			3) set_gamepad_leds 0 0 0 1;;
+			4) set_gamepad_leds 1 0 0 1;;
+			5) set_gamepad_leds 0 1 0 1;;
+			6) set_gamepad_leds 0 0 1 1;;
+			7) set_gamepad_leds 1 0 1 1;;
+			8) set_gamepad_leds 0 1 1 1;;
+			9) set_gamepad_leds 1 1 1 1;;
 		esac
 		;;
 	XBOX)
 		# see xpad_send_led_command()
 		# in linux/drivers/input/joystick/xpad.c
-		case `expr $JSNUM % 4 | bc` in
-			0) set_gamepad_leds 6;
-			;;
-			1) set_gamepad_leds 7;
-			;;
-			2) set_gamepad_leds 8;
-			;;
-			3) set_gamepad_leds 9;
-			;;
+		case $((JSNUM % 4)) in
+			0) set_gamepad_leds 6;;
+			1) set_gamepad_leds 7;;
+			2) set_gamepad_leds 8;;
+			3) set_gamepad_leds 9;;
 		esac
 		;;
 	COLOR)
 		# see dualshock4_set_leds_from_id()
 		# in linux/drivers/hid/hid-sony.c
-		case `expr $JSNUM % 7 | bc` in
-			0) set_multicolor_led 0 0 64;   # blue
-			;;
-			1) set_multicolor_led 64 0 0;   # red
-			;;
-			2) set_multicolor_led 0 64 0;   # green
-			;;
-			3) set_multicolor_led 32 0 32;  # pink
-			;;
-			4) set_multicolor_led 64 32 0;  # orange
-			;;
-			5) set_multicolor_led 0 32 32;  # teal
-			;;
-			6) set_multicolor_led 32 32 32; # white
-			;;
+		case $((JSNUM % 7)) in
+			0) set_multicolor_led 0 0 64;;	# blue
+			1) set_multicolor_led 64 0 0;;	# red
+			2) set_multicolor_led 0 64 0;;	# green
+			3) set_multicolor_led 32 0 32;;	# pink
+			4) set_multicolor_led 64 32 0;;	# orange
+			5) set_multicolor_led 0 32 32;;	# teal
+			6) set_multicolor_led 32 32 32;;# white
 		esac
 		;;
-	*) echo "called with no matching model"  1>&2
+	*) echo "called with no matching model" 1>&2
 esac
