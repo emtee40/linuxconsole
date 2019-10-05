@@ -752,7 +752,9 @@ static int mtouch_read_response(int fd, unsigned char *c, int timeout) {
 	return tmp - c;
 }
 
-static int mtouch_init(int fd, unsigned long *id, unsigned long *extra) {
+static int mtouch_init(int fd,
+		       __attribute__ ((unused)) unsigned long *id,
+		       __attribute__ ((unused)) unsigned long *extra) {
 	unsigned char response[128];
 
 	if (write(fd, MTOUCH_CMD1, sizeof(MTOUCH_CMD1) - 1) != sizeof(MTOUCH_CMD1) - 1)
@@ -782,7 +784,9 @@ static int mtouch_init(int fd, unsigned long *id, unsigned long *extra) {
 	return 0;
 }
 
-static int elo_init(int fd, unsigned long *id, unsigned long *extra) {
+static int elo_init(int fd,
+		    __attribute__ ((unused)) unsigned long *id,
+		    __attribute__ ((unused)) unsigned long *extra) {
 	unsigned char cmd[10] = { 'U', 'i', 0, 0, 0, 0, 0, 0, 0, 0 };
 	unsigned char resp[20];
 	unsigned char *tmp;
