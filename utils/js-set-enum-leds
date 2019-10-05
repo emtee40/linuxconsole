@@ -3,7 +3,8 @@
 # js-set-enum-leds: Set gamepad enumerator LEDS to match the js device number.
 
 # Copyright © 2014 bri <bri@abrij.org>
-#
+# Copyright © 2018 hzulla <kontakt@hanno.de>
+
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
@@ -19,20 +20,31 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-# If the gamepad/joystick is bluetooth-capable, bluez may set the leds
-# even before the gamepad is connected.  In these cases please match what
-# bluez will do (or may already have done if it is already running.)
-
 # If the set_gamepad_leds function provided for convenience is to be used
 # for a particular type of gamepad, the udev rule should provide the following
-# postional parameters.  See /lib/udev/rules.d/60-joystick for examples.
+# positional parameters.  See /lib/udev/rules.d/60-joystick for examples.
+
+# The LED indicator type of this device, possible values right now are:
+# FOUR
+#  a bar of four LEDs labeled 1, 2, 3, 4
+#  which can be controlled individually
+#  e.g. used by PS3 sixaxis gamepads, the Nintendo Wii controllers
+# XBOX
+#  a ring of four LEDs labeled 1, 2, 3, 4
+#  which cannot be controlled individually
+#  e.g. used by XBox gamepads
+# COLOR
+#  a single multicolor LED
+#  e.g. used by PS4 Dualshock 4 gamepad
+DEVICETYPE=$1
 
 # A partial path string containing the common part of the names of affected
 # led-class sysfs directories.
-LEDGLOB=$1
+LEDGLOB=$2
+
 # The number of the js device.  These start at 0 but enumerator LEDs are
 # 1-based. (Having at least one LED on lets user see controller is on.)
-JSNUM=$2
+JSNUM=$3
 
 set_gamepad_leds() {
 	for led in "$LEDGLOB"*; do
@@ -46,12 +58,23 @@ set_gamepad_leds() {
 	done
 }
 
-# In addition it is assumed ID_MODEL will have been set appropriately by udev
-# This is used to select the appropriate actions for the particular model.
+set_multicolor_led() {
+	for led in "$LEDGLOB"*red "$LEDGLOB"*green "$LEDGLOB"*blue; do
+		if [ -d $led ] && [ -w $led/brightness ] && [ "$1" ]; then
+			echo $1 > $led/brightness
+			shift 1
+	        else
+			echo "set_multicolor_led: wrong number of leds or values" 1>&2
+			exit -1
+		fi
+	done
+}
 
-case $ID_MODEL in
-	PLAYSTATION_R_3_Controller)
-		case $JSNUM in
+case $DEVICETYPE in
+	FOUR)
+		# see sixaxis_set_leds_from_id()
+		# in linux/drivers/hid/hid-sony.c
+		case `expr $JSNUM % 10 | bc` in
 			0) set_gamepad_leds 1 0 0 0;
 			;;
 			1) set_gamepad_leds 0 1 0 0;
@@ -66,9 +89,47 @@ case $ID_MODEL in
 			;;
 			6) set_gamepad_leds 0 0 1 1;
 			;;
-			*) set_gamepad_leds 0 0 0 0;
+			7) set_gamepad_leds 1 0 1 1;
+			;;
+			8) set_gamepad_leds 0 1 1 1;
+			;;
+			9) set_gamepad_leds 1 1 1 1;
 			;;
 		esac
 		;;
-	*) echo "called with no matching model" 1>&2
+	XBOX)
+		# see xpad_send_led_command()
+		# in linux/drivers/input/joystick/xpad.c
+		case `expr $JSNUM % 4 | bc` in
+			0) set_gamepad_leds 6;
+			;;
+			1) set_gamepad_leds 7;
+			;;
+			2) set_gamepad_leds 8;
+			;;
+			3) set_gamepad_leds 9;
+			;;
+		esac
+		;;
+	COLOR)
+		# see dualshock4_set_leds_from_id()
+		# in linux/drivers/hid/hid-sony.c
+		case `expr $JSNUM % 7 | bc` in
+			0) set_multicolor_led 0 0 64;   # blue
+			;;
+			1) set_multicolor_led 64 0 0;   # red
+			;;
+			2) set_multicolor_led 0 64 0;   # green
+			;;
+			3) set_multicolor_led 32 0 32;  # pink
+			;;
+			4) set_multicolor_led 64 32 0;  # orange
+			;;
+			5) set_multicolor_led 0 32 32;  # teal
+			;;
+			6) set_multicolor_led 32 32 32; # white
+			;;
+		esac
+		;;
+	*) echo "called with no matching model"  1>&2
 esac
