@@ -701,7 +701,7 @@ int main(int argc, char **argv)
 					exit(1);
 				} else {
 					action = t;
-					if ((parameter=optarg)) strcpy(parameter,optarg);
+					parameter = optarg;
 				}
 				break;
 			case 'h':
