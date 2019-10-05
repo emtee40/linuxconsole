@@ -25,6 +25,7 @@
 # Edit the options below to suit your needs
 #
 
+PKG_CONFIG	?= pkg-config
 CFLAGS		?= -g -O2 -Wall -Wextra
 
 PROGRAMS	= inputattach jstest jscal fftest ffmvforce ffset \
@@ -51,10 +52,10 @@ ffcfstress: ffcfstress.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) -funsigned-char $^ $(LDFLAGS) -lm -o $@
 
 ffmvforce.o: ffmvforce.c
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $^ -o $@ `sdl2-config --cflags`
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $^ -o $@ `$(PKG_CONFIG) --cflags sdl2`
 
 ffmvforce: ffmvforce.o
-	$(CC) $^ -o $@ $(LDFLAGS) -g -lm `sdl2-config --libs`
+	$(CC) $^ -o $@ $(LDFLAGS) -g -lm `$(PKG_CONFIG) --libs sdl2`
 
 axbtnmap.o: axbtnmap.c axbtnmap.h
 
