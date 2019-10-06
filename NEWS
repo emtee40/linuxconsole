@@ -1,3 +1,21 @@
+Version 1.7.0
+-------------
+
+* The udev rules for Stelladaptor devices include more compatible
+  devices (thanks to Stephen Antony).
+
+* inputattach supports the FlySky FS-iA6B RC receiver, with kernel 5.4
+  and later (thanks to Markus Koch).
+
+* ffmvforce now needs SDL2 and pkg-config (thanks to Stefan Brüns).
+
+* inputattach has a --crtscts/--no-crscts option to control CRTSCTS;
+  it also supports up to four probe-able devices checked in sequence
+  (thanks to Böszörményi Zoltán).
+
+* js-set-enum-leds supports Wii controllers, XBox gamepads, and PS4
+  Dualshock 4 gamepads (thanks to Hanno Zulla).
+
 Version 1.6.1
 -------------
 

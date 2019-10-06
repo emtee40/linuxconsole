@@ -1,5 +1,5 @@
 			  linuxconsole tools
-			    Release 1.6.1
+			    Release 1.7.0
 		 http://sf.net/projects/linuxconsole/
 
 
@@ -217,10 +217,12 @@ The following people have contributed to this release:
 * Julian Squires: Wacom IV support.
 * Jamie Lentin: mouseman4 mode.
 * Böszörményi Zoltán: eGalaxTouch support, Hampshire support, systemd
-  notification.
+  notification, multiple device initialisation, CRTSCTS control.
 * Stephen Anthony: evdev-joystick (based on G25manage).
 * Hans Verkuil: Pulse-Eight and RainShadow HDMI CEC dongle support.
 * Jon Sangster: min/max axis control in evdev-joystick.
+* Markus Koch: FlySky FS-iA6B RC support.
+* Stefan Brüns: SDL2 port of ffmvforce.
 
 
 License
