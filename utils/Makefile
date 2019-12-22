@@ -45,10 +45,10 @@ endif
 
 evdev-joystick: evdev-joystick.c
 
-inputattach: inputattach.c
+inputattach: inputattach.c serio-ids.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -funsigned-char $^ $(LDFLAGS) $(SYSTEMDFLAGS) -lm -o $@
 
-ffcfstress: ffcfstress.c
+ffcfstress: ffcfstress.c bitmaskros.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -funsigned-char $^ $(LDFLAGS) -lm -o $@
 
 ffmvforce.o: ffmvforce.c
@@ -70,6 +70,9 @@ jstest: jstest.o axbtnmap.o
 
 gencodes: gencodes.c scancodes.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) gencodes.c -o $@
+
+fftest: fftest.c bitmaskros.h
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) fftest.c -o $@
 
 jscal-restore: jscal-restore.in
 	sed "s^@@PREFIX@@^$(PREFIX)^g" < $^ > $@
