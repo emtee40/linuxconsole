@@ -1,3 +1,13 @@
+Version 1.7.1
+-------------
+
+* inputattach supports the Gunze protocol (thanks to Tillmann Karras).
+
+* Three missing dependencies were added in the Makefile (thanks to
+  Stefanos Chaliasos).
+
+* An overflow in ffcfstress was fixed (thanks to Bernat Arlandis).
+
 Version 1.7.0
 -------------
 

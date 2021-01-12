@@ -223,6 +223,9 @@ The following people have contributed to this release:
 * Jon Sangster: min/max axis control in evdev-joystick.
 * Markus Koch: FlySky FS-iA6B RC support.
 * Stefan Brüns: SDL2 port of ffmvforce.
+* Tillmann Karras: Gunze support.
+* Stefanos Chaliasos: build fixes.
+* Bernat Arlandis: ffcfstress overflow fix.
 
 
 License
@@ -233,7 +236,7 @@ The linuxconsole tools are
 	Copyright © 2001 Oliver Hamann
 	Copyright © 2001-2002 Johann Deneux
 	Copyright © 2001 Arndt Schoenewald
-	Copyright © 2008-2019 Stephen Kitt
+	Copyright © 2008-2019, 2021 Stephen Kitt
 	Copyright © 2016 Stephen Anthony
 
 
