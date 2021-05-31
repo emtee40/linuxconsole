@@ -40,7 +40,7 @@ clean:
 	$(RM) *.o *.swp $(PROGRAMS) *.orig *.rej map *~ *.rules
 
 ifeq ($(SYSTEMD_SUPPORT),1)
-SYSTEMDFLAGS = -DSYSTEMD_SUPPORT=1 $(shell pkg-config --cflags --libs libsystemd)
+SYSTEMDFLAGS = -DSYSTEMD_SUPPORT=1 $(shell $(PKG_CONFIG) --cflags --libs libsystemd)
 endif
 
 evdev-joystick: evdev-joystick.c
