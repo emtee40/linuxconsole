@@ -1,3 +1,12 @@
+Version 1.8.0
+-------------
+
+* Sub-groups of tools can be disabled, simplifying the build for users
+  who don't need everything.
+
+* jscal can be given a specific button to use to confirm calibration
+  at each step.
+
 Version 1.7.1
 -------------
 

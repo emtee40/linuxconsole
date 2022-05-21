@@ -1,5 +1,5 @@
 			  linuxconsole tools
-			    Release 1.7.0
+			    Release 1.8.0
 		 http://sf.net/projects/linuxconsole/
 
 
@@ -54,10 +54,16 @@ and then as root
 from the distribution's top directory. This will install everything
 into /usr/local. Should you wish to install the tools elsewhere, you
 can use the PREFIX variable:
-	PREFIX=/usr make install
+	make install PREFIX=/usr
 The Makefiles also recognise the DESTDIR variable which can be used to
 install into a temporary directory (this is useful mainly for
 distribution packagers).
+
+If you don't want to build the full set of tools, groups can be
+disabled by setting the appropriate variable:
+* DISABLE_INPUTATTACH to ignore inputattach
+* DISABLE_JOYSTICK to ignore joystick-related tools
+* DISABLE_FORCEFEEDBACK to ignore force-feedback-related tools
 
 
 Auto-loading inputattach and jscal-restore
@@ -226,6 +232,7 @@ The following people have contributed to this release:
 * Tillmann Karras: Gunze support.
 * Stefanos Chaliasos: build fixes.
 * Bernat Arlandis: ffcfstress overflow fix.
+* Mikko Tuumanen: jscal -b.
 
 
 License
@@ -236,7 +243,7 @@ The linuxconsole tools are
 	Copyright © 2001 Oliver Hamann
 	Copyright © 2001-2002 Johann Deneux
 	Copyright © 2001 Arndt Schoenewald
-	Copyright © 2008-2019, 2021 Stephen Kitt
+	Copyright © 2008-2019, 2021-2022 Stephen Kitt
 	Copyright © 2016 Stephen Anthony
 
 
