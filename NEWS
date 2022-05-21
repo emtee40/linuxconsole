@@ -1,3 +1,8 @@
+Version 1.8.1
+-------------
+
+* Drop the pre-built gencodes binary mistakenly included in 1.8.0.
+
 Version 1.8.0
 -------------
 
