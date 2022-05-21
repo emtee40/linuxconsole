@@ -38,7 +38,7 @@ BEGIN {
     secproduct = $2;
 }
 
-/$^/ {
+/^$/ {
     # New section, check the values remembered from the previous
     # If the section defined a name, and we don't have one, and the
     # section described an input device, store the name and serial
