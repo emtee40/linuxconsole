@@ -63,6 +63,7 @@ __u16 buttonmap[(KEY_MAX - BTN_MISC + 1)];
 char axes, buttons, fuzz;
 int version;
 struct correction_data corda[ABS_MAX + 1];
+int button = -1, buttonno = -1;
 
 struct js_info {
 	int buttons;
@@ -75,8 +76,6 @@ void print_position(int i, int a)
 	fflush(stdout);
 
 }
-
-static int button = -1;
 
 int get_time(void)
 {
@@ -272,13 +271,13 @@ void calibrate()
 	if(button == -1) {
 		push_msg = "Move axis %d to %s position and push any button.\n";
 	}else{
-		push_msg = "Move axis %d to %s position and push the button.\n";
+		push_msg = "Move axis %d to %s position and push button %d.\n";
 	}
 
 	for (axis = 0; axis < axes; axis++)
 		for (pos = 0; pos < NUM_POS; pos++) {
 			while(b ^ js.buttons) wait_for_event(fd, &js);
-			printf(push_msg, axis, pos_name[pos]);
+			printf(push_msg, axis, pos_name[pos], buttonno);
 
 			if(button == -1)
 				while (!(b ^ js.buttons)) {
@@ -721,7 +720,8 @@ int main(int argc, char **argv)
 				}
 				break;
 			case 'b':
-				button = 1 << atoi(optarg);
+				buttonno = atoi(optarg);
+				button = 1 << buttonno;
 				break;
 			case 'h':
 				help();
