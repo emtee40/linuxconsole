@@ -76,6 +76,8 @@ void print_position(int i, int a)
 
 }
 
+static int button = -1;
+
 int get_time(void)
 {
 	struct timeval tv;
@@ -154,6 +156,7 @@ void help(void)
 	puts("Usage: jscal <device>");
 	putchar('\n');
 	puts("  -c             --calibrate         Calibrate the joystick");
+	puts("  -b <number>    --button            Button to continue calibrating");
 	puts("  -h             --help              Display this help");
 	puts("  -s <x,y,z...>  --set-correction    Sets correction to specified values");
 	puts("  -t             --test-center       Tests if joystick is corectly calibrated");
@@ -265,16 +268,28 @@ void calibrate()
 
 
 	b = js.buttons;
+	const char * push_msg;
+	if(button == -1) {
+		push_msg = "Move axis %d to %s position and push any button.\n";
+	}else{
+		push_msg = "Move axis %d to %s position and push the button.\n";
+	}
 
 	for (axis = 0; axis < axes; axis++)
 		for (pos = 0; pos < NUM_POS; pos++) {
 			while(b ^ js.buttons) wait_for_event(fd, &js);
-			printf("Move axis %d to %s position and push any button.\n", axis, pos_name[pos]);
+			printf(push_msg, axis, pos_name[pos]);
 
-			while (!(b ^ js.buttons)) {
-				print_position(axis, js.axis[axis]);
-				wait_for_event(fd, &js);
-			}
+			if(button == -1)
+				while (!(b ^ js.buttons)) {
+					print_position(axis, js.axis[axis]);
+					wait_for_event(fd, &js);
+				}
+			else
+                                while (!(js.buttons & button)) {
+                                        print_position(axis, js.axis[axis]);
+                                        wait_for_event(fd, &js);
+                                }
 
 			putcs("Hold ... ");
 
@@ -670,6 +685,7 @@ int main(int argc, char **argv)
   // /usr/include/getopt.h
 	static struct option long_options[] =
 	{
+		{"button", required_argument, NULL, 'b'},
 		{"calibrate", no_argument, NULL, 'c'},
 		{"help", no_argument, NULL, 'h'},
 		{"set-correction", required_argument, NULL, 's'},
@@ -687,7 +703,7 @@ int main(int argc, char **argv)
 	}
 
 	do {
-		t = getopt_long(argc, argv, "chpqu:s:vVt", long_options, &option_index);
+		t = getopt_long(argc, argv, "b:chpqu:s:vVt", long_options, &option_index);
 		switch (t) {
 			case 'p':
 			case 'q':
@@ -703,6 +719,9 @@ int main(int argc, char **argv)
 					action = t;
 					parameter = optarg;
 				}
+				break;
+			case 'b':
+				button = 1 << atoi(optarg);
 				break;
 			case 'h':
 				help();
