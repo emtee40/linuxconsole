@@ -1,4 +1,4 @@
-.TH jscal 1 "Jul 11, 2010" jscal
+.TH jscal 1 "May 21, 2022" jscal
 .SH NAME
 jscal \- joystick calibration and remapping program
 .SH SYNOPSIS
@@ -23,6 +23,13 @@ Calibrate the joystick.
 .TP
 .BR \-h ", " \-\-help
 Print out a summary of available options.
+.TP
+.BR \-b " <fIbutton\fP>"
+Specify a button to use to continue. By default, when calibrating
+axes, any button will cause the position to be read and used for
+calibration; this option allows a specific button to be chosen
+instead. This is useful with devices where a single input is used for
+both an axis and a button.
 .TP
 .BR \-s ", " \-\-set\-correction " <\fInb_axes\fP,\fItype\fP,\fIprecision\fP,\fIcoefficients\fP,...>"
 Sets correction to specified values.
