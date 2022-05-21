@@ -2,7 +2,7 @@
 #
 # Makefile for Linux input utilities
 #
-# © 2011, 2016 Stephen Kitt <steve@sk2.org>
+# © 2011, 2016, 2022 Stephen Kitt <steve@sk2.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,9 +19,18 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301 USA.
 
-MANPAGES	= inputattach.1 jstest.1 jscal.1 fftest.1 \
-		  ffmvforce.1 ffset.1 ffcfstress.1 jscal-store.1 \
-		  jscal-restore.1 evdev-joystick.1
+ifndef DISABLE_INPUTATTACH
+MANPAGES	+= inputattach.1
+endif
+
+ifndef DISABLE_JOYSTICK
+MANPAGES	+= jstest.1 jscal.1 jscal-restore.1 jscal-store.1 \
+		   evdev-joystick.1
+endif
+
+ifndef DISABLE_FORCEFEEDBACK
+MANPAGES	+= fftest.1 ffmvforce.1 ffset.1 ffcfstress.1
+endif
 
 PREFIX          ?= /usr/local
 
