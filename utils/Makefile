@@ -48,40 +48,45 @@ distclean: clean
 clean:
 	$(RM) *.o *.swp $(PROGRAMS) *.orig *.rej map *~ *.rules
 
+inputattach.o: override CFLAGS += -funsigned-char
+inputattach.o: inputattach.c serio-ids.h
 ifeq ($(SYSTEMD_SUPPORT),1)
-SYSTEMDFLAGS = -DSYSTEMD_SUPPORT=1 $(shell $(PKG_CONFIG) --cflags --libs libsystemd)
+inputattach.o: override CPPFLAGS += -DSYSTEMD_SUPPORT=1
+inputattach.o: override CFLAGS += $(shell $(PKG_CONFIG) --cflags libsystemd)
 endif
 
-evdev-joystick: evdev-joystick.c
+inputattach: LDLIBS = -lm
+ifeq ($(SYSTEMD_SUPPORT),1)
+inputattach: LDLIBS += $(shell $(PKG_CONFIG) --libs-only-l libsystemd)
+inputattach: override LDFLAGS += \
+	$(shell $(PKG_CONFIG) --libs-only-L --libs-only-other libsystemd)
+endif
 
-inputattach: inputattach.c serio-ids.h
-	$(CC) $(CFLAGS) $(CPPFLAGS) -funsigned-char $^ $(LDFLAGS) $(SYSTEMDFLAGS) -lm -o $@
+ffcfstress.o: override CFLAGS += -funsigned-char
+ffcfstress.o: ffcfstress.c bitmaskros.h
 
-ffcfstress: ffcfstress.c bitmaskros.h
-	$(CC) $(CFLAGS) $(CPPFLAGS) -funsigned-char $^ $(LDFLAGS) -lm -o $@
+ffcfstress: LDLIBS = -lm
 
+ffmvforce.o: override CFLAGS += $(shell $(PKG_CONFIG) --cflags sdl2)
 ffmvforce.o: ffmvforce.c
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $^ -o $@ `$(PKG_CONFIG) --cflags sdl2`
 
+ffmvforce: LDLIBS = -lm $(shell $(PKG_CONFIG) --libs sdl2)
 ffmvforce: ffmvforce.o
-	$(CC) $^ -o $@ $(LDFLAGS) -g -lm `$(PKG_CONFIG) --libs sdl2`
 
 axbtnmap.o: axbtnmap.c axbtnmap.h
 
 jscal.o: jscal.c axbtnmap.h
 
+jscal: LDLIBS = -lm
 jscal: jscal.o axbtnmap.o
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $^ -lm -o $@
 
 jstest.o: jstest.c axbtnmap.h
 
 jstest: jstest.o axbtnmap.o
 
-gencodes: gencodes.c scancodes.h
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) gencodes.c -o $@
+gencodes.o: gencodes.c scancodes.h
 
-fftest: fftest.c bitmaskros.h
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) fftest.c -o $@
+fftest.o: fftest.c bitmaskros.h
 
 jscal-restore: jscal-restore.in
 	sed "s^@@PREFIX@@^$(PREFIX)^g" < $^ > $@
