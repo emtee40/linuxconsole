@@ -233,6 +233,7 @@ The following people have contributed to this release:
 * Stefanos Chaliasos: build fixes.
 * Bernat Arlandis: ffcfstress overflow fix.
 * Mikko Tuumanen: jscal -b.
+* Gareth Randall: General Touch ST6001S support.
 
 
 License
